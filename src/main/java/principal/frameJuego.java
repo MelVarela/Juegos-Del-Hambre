@@ -324,7 +324,7 @@ public class frameJuego extends javax.swing.JFrame {
     private String getEquipo(Personaje personaje){
         String devolver = "";
         for (Equipo equipo : equipos) {
-            if(equipo.miembros.contains(personaje)) devolver = equipo.nombre;
+            if(equipo.getMiembros().contains(personaje)) devolver = equipo.nombre;
         }
         return devolver;
     }
@@ -343,14 +343,22 @@ public class frameJuego extends javax.swing.JFrame {
         arena.añadirEvento(new Evento('I', 2, true, "%s es apuñalado por %s por la espalda."));
         arena.añadirEvento(new Evento('I', 2, false, "%s y %s hacen una pequeña tregua para escapar de la arena inicial juntos."));
         arena.añadirEvento(new Evento('I', 3, false, "%s, %s y %s se ignoran mutuamente para beneficio de todos."));
-        arena.añadirEvento(new Evento('I',1,false,"%s se tropieza intentando huir de la arena."));
+        arena.añadirEvento(new Evento('I',1,false,"%s se tropieza intentando huir de la arena incial."));
         arena.añadirEvento(new Evento('I',1,false,"%s busca y encuentra suministros en la arena inicial."));
-        arena.añadirEvento(new Evento('I',1,false,"%s encuentra un pequeño cuchillo en la arena."));
-        arena.añadirEvento(new Evento('I',1,false,"%s encuentra armamento en la arena."));
+        arena.añadirEvento(new Evento('I',1,false,"%s encuentra un pequeño cuchillo en la arena inicial."));
+        arena.añadirEvento(new Evento('I',1,false,"%s encuentra armamento en la arena inicial."));
         arena.añadirEvento(new Evento('I',2,false,"%s intenta huir, mientras que %s le persigue."));
         arena.añadirEvento(new Evento('I',2,false,"%s huye de la arena, sin saber que %s lo está persiguiendo."));
         arena.añadirEvento(new Evento('I',3,false,"%s, %s y %s se meten en una pelea, sin embargo, se dan cuenta de que no es el mejor momento y se separan."));
         arena.añadirEvento(new Evento('I', 2, true, "%s come una manzana que le da %s, sin saber que estaba envenada con cianuro."));
+        arena.añadirEvento(new Evento('I',1,false,"%s agarra una pala."));
+        arena.añadirEvento(new Evento('I',1,false,"%s agarra una mochila y se va."));
+        arena.añadirEvento(new Evento('I',2,false,"%s y %s se pelean por una mochila de suministros, sin darse cuenta de que está vacia."));
+        arena.añadirEvento(new Evento('I',2,false,"%s y %s se pelean por una mochila de suministros."));
+        arena.añadirEvento(new Evento('I',1,false,"%s encuentra una cantimplora."));
+        arena.añadirEvento(new Evento('I',1,false,"%s pilla toda la comida que puede."));
+        arena.añadirEvento(new Evento('I',2,false,"%s le rompe la nariz a %s por un poco de comida."));
+        arena.añadirEvento(new Evento('I',1,false,"%s grita por ayuda."));
         
         bosque.añadirEvento(new Evento('D', 1, false, "%s busca suministros en el bosque."));
         bosque.añadirEvento(new Evento('D', 1, false, "%s recoge frutos del bosque."));
@@ -361,6 +369,8 @@ public class frameJuego extends javax.swing.JFrame {
         bosque.añadirEvento(new Evento('D',1,false,"%s se cae a un río."));
         bosque.añadirEvento(new Evento('D',2,false,"%s es atacado por un oso, pero %s le ayuda a huir."));
         bosque.añadirEvento(new Evento('N', 2, false, "%s le roba las cosas a %s mientras duerme."));
+        bosque.añadirEvento(new Evento('D', 1, false, "%s se va de caza."));
+        bosque.añadirEvento(new Evento('D',1,false,"%s descubre una cueva."));
         
         costa.añadirEvento(new Evento('D', 1, false, "%s se baña en el mar."));
         costa.añadirEvento(new Evento('D', 2, true, "%s cae en la trampa de confiar en %s, y muere ahogado."));
@@ -370,6 +380,8 @@ public class frameJuego extends javax.swing.JFrame {
         costa.añadirEvento(new Evento('D', 1, false, "%s se lava las heridas con agua de mar."));
         costa.añadirEvento(new Evento('D', 1, false, "%s hierve agua para obtener agua potable."));
         costa.añadirEvento(new Evento('D', 2, false, "%s construye un castillo de arena para distraerse de los horrores del capitalismo."));
+        costa.añadirEvento(new Evento('D',1,false,"%s pesca."));
+        costa.añadirEvento(new Evento('N', 2, false, "%s y %s hacen una tregua y hablan sobre las persona que quedan con vida."));
     }
     
     /**

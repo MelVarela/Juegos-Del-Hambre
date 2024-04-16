@@ -4,7 +4,8 @@ import java.util.ArrayList;
 
 public class Equipo {
     String nombre;
-    ArrayList<Personaje> miembros = new ArrayList<>();
+    private ArrayList<Personaje> miembros = new ArrayList<>();
+    int numMiembros;
     
     Equipo(String nombre){
         this.nombre = nombre;
@@ -17,5 +18,19 @@ public class Equipo {
             }
         }
         return new Personaje();
+    }
+    
+    public void añadirMiembro(Personaje personaje){
+        miembros.add(personaje);
+        numMiembros++;
+    }
+    
+    public void borrarMiembro(Personaje personaje){
+        miembros.remove(personaje);
+        numMiembros--;
+    }
+    
+    public ArrayList<Personaje> getMiembros(){
+        return miembros;
     }
 }
