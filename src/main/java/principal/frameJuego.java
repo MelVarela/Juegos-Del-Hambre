@@ -359,6 +359,7 @@ public class frameJuego extends javax.swing.JFrame {
         arena.añadirEvento(new Evento('I',1,false,"%s pilla toda la comida que puede."));
         arena.añadirEvento(new Evento('I',2,false,"%s le rompe la nariz a %s por un poco de comida."));
         arena.añadirEvento(new Evento('I',1,false,"%s grita por ayuda."));
+	arena.añadirEvento(new Evento('I', 1, true, "%s agarra una mochila, sin darse cuenta de que era una trampa bomba, y explota en mil pedazos."))
         
         bosque.añadirEvento(new Evento('D', 1, false, "%s busca suministros en el bosque."));
         bosque.añadirEvento(new Evento('D', 1, false, "%s recoge frutos del bosque."));
@@ -371,6 +372,7 @@ public class frameJuego extends javax.swing.JFrame {
         bosque.añadirEvento(new Evento('N', 2, false, "%s le roba las cosas a %s mientras duerme."));
         bosque.añadirEvento(new Evento('D', 1, false, "%s se va de caza."));
         bosque.añadirEvento(new Evento('D',1,false,"%s descubre una cueva."));
+	bosque.añadirEvento(new Evento('D', 1, true, "%s muere arroyado por un jabalí."))
         
         costa.añadirEvento(new Evento('D', 1, false, "%s se baña en el mar."));
         costa.añadirEvento(new Evento('D', 2, true, "%s cae en la trampa de confiar en %s, y muere ahogado."));
@@ -383,6 +385,7 @@ public class frameJuego extends javax.swing.JFrame {
         costa.añadirEvento(new Evento('D',1,false,"%s pesca."));
         costa.añadirEvento(new Evento('N', 2, false, "%s y %s hacen una tregua y hablan sobre las persona que quedan con vida."));
     }
+	costa.añadirEvento(new Evento('D', 1, true, "%s pisa un pez roca y muere."))
     
     /**
      * @param args the command line arguments

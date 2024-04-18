@@ -22,3 +22,6 @@
 	- Arreglado un error que permitia añadir personajes con nombre duplicado.
 		- Esto causa varios problemas durante la ejecución, aunque en el futuro será posible.  
 	- Arreglados errores ortográficos.
+
+#### V. 0.3.1
+- Añadidos tres nuevos eventos.
