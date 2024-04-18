@@ -25,3 +25,6 @@
 
 #### V. 0.3.1
 - Añadidos tres nuevos eventos.
+
+#### V. 0.3.2
+- Correción de código.

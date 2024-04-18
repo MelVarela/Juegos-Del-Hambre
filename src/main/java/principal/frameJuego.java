@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package principal;
 
 import java.awt.*;
@@ -9,19 +5,12 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-/**
- *
- * @author emilio.jose.varelaso
- */
 public class frameJuego extends javax.swing.JFrame {
-
-    /**
-     * Creates new form frameJuego
-     */
     public frameJuego() {
         initComponents();
     }
     
+    //Estas son las funciones que se usan para recibir datos.
     public void setJugadoresArena(ArrayList<Personaje> personajes){
         arena.setPersonajes(personajes);
     }
@@ -30,9 +19,12 @@ public class frameJuego extends javax.swing.JFrame {
         this.equipos = equipos;
     }
     
+    //Declaración de areas
     Area arena = new Area("Arena");
     Area bosque = new Area("Bosque");
     Area costa = new Area("Costa");
+    
+    //Declaración de variables
     int dia = 1;
     boolean sumar = false;
     boolean finalizado = false;
@@ -224,9 +216,14 @@ public class frameJuego extends javax.swing.JFrame {
 
     private void pasarDiaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pasarDiaMouseClicked
         if(finalizado){
+        	//Esto evita que la simulación prosiga con un único jugador.
             JOptionPane.showMessageDialog(rootPane, "La simulación ha finalizado");
         }else{
             areaEventos.setText("");
+            /*
+             * Primero, se comprueba que no se haya producido una condicion de victoria.
+             * Después, si es necesario se pasa el dia, se actualiza el display de este, y se realizan los eventos.
+             */
             if(!checkVictoria()){
                 if(sumar){
                     dia++;
@@ -245,7 +242,8 @@ public class frameJuego extends javax.swing.JFrame {
     }//GEN-LAST:event_pasarDiaMouseClicked
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        areas.add(arena);
+        //Acciones que se realizan al abrir la ventana.
+    	areas.add(arena);
         areas.add(bosque);
         areas.add(costa);
         
@@ -255,6 +253,8 @@ public class frameJuego extends javax.swing.JFrame {
         costa.añadirConexion(arena);
         
         asignarEventos();
+        
+        //Esto hace que si se inicia con un solo jugador, este gane automaticamente,
         if(checkVictoria()){
             victoria();
         }else{
@@ -301,6 +301,7 @@ public class frameJuego extends javax.swing.JFrame {
     }
     
     private boolean checkVictoria(){
+    	//Si detecta uno o menos jugadores, declara una victoria.
         int totalJug = 0;
         for (Area area : areas) {
             for (Personaje pers : area.jugadores) {
@@ -338,6 +339,7 @@ public class frameJuego extends javax.swing.JFrame {
     }
     //Declaracion de eventos
     private void asignarEventos(){
+    	//Esta funcion, pues... asigna eventos.
         arena.añadirEvento(new Evento('I', 1, false, "%s escapa de la arena inicial."));
         arena.añadirEvento(new Evento('I', 1, false, "%s busca, sin éxito, suministros en la arena inicial."));
         arena.añadirEvento(new Evento('I', 2, true, "%s es apuñalado por %s por la espalda."));
@@ -359,7 +361,7 @@ public class frameJuego extends javax.swing.JFrame {
         arena.añadirEvento(new Evento('I',1,false,"%s pilla toda la comida que puede."));
         arena.añadirEvento(new Evento('I',2,false,"%s le rompe la nariz a %s por un poco de comida."));
         arena.añadirEvento(new Evento('I',1,false,"%s grita por ayuda."));
-	arena.añadirEvento(new Evento('I', 1, true, "%s agarra una mochila, sin darse cuenta de que era una trampa bomba, y explota en mil pedazos."))
+        arena.añadirEvento(new Evento('I', 1, true, "%s agarra una mochila, sin darse cuenta de que era una trampa bomba, y explota en mil pedazos."))
         
         bosque.añadirEvento(new Evento('D', 1, false, "%s busca suministros en el bosque."));
         bosque.añadirEvento(new Evento('D', 1, false, "%s recoge frutos del bosque."));
@@ -372,7 +374,7 @@ public class frameJuego extends javax.swing.JFrame {
         bosque.añadirEvento(new Evento('N', 2, false, "%s le roba las cosas a %s mientras duerme."));
         bosque.añadirEvento(new Evento('D', 1, false, "%s se va de caza."));
         bosque.añadirEvento(new Evento('D',1,false,"%s descubre una cueva."));
-	bosque.añadirEvento(new Evento('D', 1, true, "%s muere arroyado por un jabalí."))
+        bosque.añadirEvento(new Evento('D', 1, true, "%s muere arroyado por un jabalí."))
         
         costa.añadirEvento(new Evento('D', 1, false, "%s se baña en el mar."));
         costa.añadirEvento(new Evento('D', 2, true, "%s cae en la trampa de confiar en %s, y muere ahogado."));
@@ -384,12 +386,9 @@ public class frameJuego extends javax.swing.JFrame {
         costa.añadirEvento(new Evento('D', 2, false, "%s construye un castillo de arena para distraerse de los horrores del capitalismo."));
         costa.añadirEvento(new Evento('D',1,false,"%s pesca."));
         costa.añadirEvento(new Evento('N', 2, false, "%s y %s hacen una tregua y hablan sobre las persona que quedan con vida."));
+        costa.añadirEvento(new Evento('D', 1, true, "%s pisa un pez roca y muere."))
     }
-	costa.añadirEvento(new Evento('D', 1, true, "%s pisa un pez roca y muere."))
-    
-    /**
-     * @param args the command line arguments
-     */
+	
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

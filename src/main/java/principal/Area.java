@@ -76,17 +76,25 @@ public class Area {
         String textoEventos = "";
         Random alt = new Random();
         ArrayList<Personaje> jugRemove = new ArrayList<>();
+        
+        //Los eventos funcionan de la siguiente manera:
+        /*
+         * Se realiza un blucle for each de la lista de jugadores interna del area.
+         * Cada jugador, tiene un 15% de posibilidades de moverse de area.
+         * En caso de que no se mueva, realizará un evento.
+         * 
+         * El evento sucede al azar, y antes de realizarlo se asegura de que haya suficientes jugadores para llevarlo a cabo.
+         * Si el evento necesita mas de un personaje, se asegurará de que ninguno esté repetido.
+         * Si el evento es letal, matara al personaje.
+         */
         for (Personaje jugador : jugadores) {
             int i = alt.nextInt(0, 100);
             if(i > 15){
                 int ev = alt.nextInt(eventos.size());
                 int jug = eventos.get(ev).getNumeroPersonajes();
-                System.out.println("Presentes: "+ presentes);
                 while(jug > presentes){
-                    System.out.println("Necesarios: "+ jug);
                     ev = alt.nextInt(eventos.size());
                     jug = eventos.get(ev).getNumeroPersonajes();
-                    System.out.println("Bucle accion decision");
                 }
                 switch(jug){
                     case 1->{
