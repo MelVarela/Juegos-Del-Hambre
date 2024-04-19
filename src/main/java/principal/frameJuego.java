@@ -19,6 +19,10 @@ public class frameJuego extends javax.swing.JFrame {
         this.equipos = equipos;
     }
     
+    public void setPersonajes(ArrayList<Personaje> personajes){
+        this.personajes = personajes;
+    }
+    
     //Declaración de areas
     Area arena = new Area("Arena");
     Area bosque = new Area("Bosque");
@@ -32,6 +36,7 @@ public class frameJuego extends javax.swing.JFrame {
     ArrayList<Area> areas = new ArrayList<>();
     DefaultListModel muertos = new DefaultListModel();
     ArrayList<Equipo> equipos = new ArrayList<>();
+    ArrayList<Personaje> personajes = new ArrayList<>();
     
     
     /**
@@ -215,6 +220,7 @@ public class frameJuego extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowActivated
 
     private void pasarDiaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pasarDiaMouseClicked
+        accionFalse();
         if(finalizado){
         	//Esto evita que la simulación prosiga con un único jugador.
             JOptionPane.showMessageDialog(rootPane, "La simulación ha finalizado");
@@ -267,7 +273,7 @@ public class frameJuego extends javax.swing.JFrame {
     private void ticDiurno(){
         String textoFinal = "";
         for (Area area : areas) {
-            textoFinal += area.realizarEventos();
+            textoFinal += area.realizarEventos('D');
             for (Object muerto : area.darMuertos()) {
                 muertos.addElement(muerto);
                 area.limpiarMuertos();
@@ -279,7 +285,7 @@ public class frameJuego extends javax.swing.JFrame {
     private void ticNocturno(){
         String textoFinal = "";
         for (Area area : areas) {
-            textoFinal += area.realizarEventos();
+            textoFinal += area.realizarEventos('N');
             for (Object muerto : area.darMuertos()) {
                 muertos.addElement(muerto);
                 area.limpiarMuertos();
@@ -291,7 +297,7 @@ public class frameJuego extends javax.swing.JFrame {
     private void ticInicial(){
         String textoFinal = "";
         for (Area area : areas) {
-            textoFinal += area.realizarEventos();
+            textoFinal += area.realizarEventos('I');
             for (Object muerto : area.darMuertos()) {
                 muertos.addElement(muerto);
                 area.limpiarMuertos();
@@ -337,6 +343,14 @@ public class frameJuego extends javax.swing.JFrame {
         areaEventos.setText(ganadorText);
         finalizado = true;
     }
+    
+    private void accionFalse(){
+        for (Area area : areas) {
+            for (Personaje personaje : area.jugadores){
+                personaje.setAccion(false);
+            }
+        }
+    }
     //Declaracion de eventos
     private void asignarEventos(){
     	//Esta funcion, pues... asigna eventos.
@@ -361,7 +375,26 @@ public class frameJuego extends javax.swing.JFrame {
         arena.añadirEvento(new Evento('I',1,false,"%s pilla toda la comida que puede."));
         arena.añadirEvento(new Evento('I',2,false,"%s le rompe la nariz a %s por un poco de comida."));
         arena.añadirEvento(new Evento('I',1,false,"%s grita por ayuda."));
-        arena.añadirEvento(new Evento('I', 1, true, "%s agarra una mochila, sin darse cuenta de que era una trampa bomba, y explota en mil pedazos."))
+        arena.añadirEvento(new Evento('I', 1, true, "%s agarra una mochila, sin darse cuenta de que era una trampa bomba, y explota en mil pedazos."));
+        arena.añadirEvento(new Evento('D', 1, false, "%s patrulla la arena inicial."));
+        arena.añadirEvento(new Evento('D', 1, false, "%s busca algo util entre lo que queda tras el saqueo inicial."));
+        arena.añadirEvento(new Evento('D', 1, false, "%s encuentra comida en buen estado que nadie recogió durante el saqueo inicial."));
+        arena.añadirEvento(new Evento('D', 2, false, "%s se encuentra por sorpresa a %s, pero se separan rapidamente."));
+        arena.añadirEvento(new Evento('D', 2, true, "%s pensaba que ya no quedaba nadie en la arena inicial, pero %s le demuestra que se equivoca con un par de puñaladas."));
+        arena.añadirEvento(new Evento('D', 1, false, "%s encuentra una sarten."));
+        arena.añadirEvento(new Evento('D', 1, false, "%s no tiene suerte buscando restos del saqueo inicial."));
+        arena.añadirEvento(new Evento('N', 1, false, "%s decide pasar la noche en la arena inicial."));
+        arena.añadirEvento(new Evento('N', 1, false, "%s pasa la noche en vela vigilando la arena inicial."));
+        arena.añadirEvento(new Evento('N', 3, false, "%s, %s y %s se encuentran en la arena inicial, pero todos deciden que están demasiado cansados para pelear."));
+        arena.añadirEvento(new Evento('N', 1, false, "%s duerme en el centro de la arena inicial, con la esperanza de que nadie le vea."));
+        arena.añadirEvento(new Evento('N', 1, false, "A %s le hubiera gustado pasar la noche fuera de la arena inicial, pero no le dio tiempo a escapar."));
+        arena.añadirEvento(new Evento('N', 1, false, "%s se queda dormido mirando los aviones que pasan por encima de la arena inicial."));
+        arena.añadirEvento(new Evento('N', 1, false, "%s se pasa toda la noche intentando emboscar a una linterna que vio en la distancia, sin darse cuenta de que era una farola."));
+        arena.añadirEvento(new Evento('D', 2, true, "%s es golpeado en la cabeza con una sarten por %s"));
+        arena.añadirEvento(new Evento('D', 1, false, "%s se encuentra una sarten que alguine había tirado."));
+        arena.añadirEvento(new Evento('D', 1, false, "%s tira una sarten que tenía por algún motivo."));
+        arena.añadirEvento(new Evento('N', 1, false, "%s duerme en el cemento de la arena inicial."));
+        arena.añadirEvento(new Evento('N', 1, true, "%s intenta subirse a una farola para ver mejor, pero se cae y muere."));
         
         bosque.añadirEvento(new Evento('D', 1, false, "%s busca suministros en el bosque."));
         bosque.añadirEvento(new Evento('D', 1, false, "%s recoge frutos del bosque."));
@@ -374,7 +407,8 @@ public class frameJuego extends javax.swing.JFrame {
         bosque.añadirEvento(new Evento('N', 2, false, "%s le roba las cosas a %s mientras duerme."));
         bosque.añadirEvento(new Evento('D', 1, false, "%s se va de caza."));
         bosque.añadirEvento(new Evento('D',1,false,"%s descubre una cueva."));
-        bosque.añadirEvento(new Evento('D', 1, true, "%s muere arroyado por un jabalí."))
+        bosque.añadirEvento(new Evento('D', 1, true, "%s muere arroyado por un jabalí."));
+        bosque.añadirEvento(new Evento('N', 2, false, "%s deja a %s entrar en su tienda de campaña."));
         
         costa.añadirEvento(new Evento('D', 1, false, "%s se baña en el mar."));
         costa.añadirEvento(new Evento('D', 2, true, "%s cae en la trampa de confiar en %s, y muere ahogado."));
@@ -385,8 +419,17 @@ public class frameJuego extends javax.swing.JFrame {
         costa.añadirEvento(new Evento('D', 1, false, "%s hierve agua para obtener agua potable."));
         costa.añadirEvento(new Evento('D', 2, false, "%s construye un castillo de arena para distraerse de los horrores del capitalismo."));
         costa.añadirEvento(new Evento('D',1,false,"%s pesca."));
-        costa.añadirEvento(new Evento('N', 2, false, "%s y %s hacen una tregua y hablan sobre las persona que quedan con vida."));
-        costa.añadirEvento(new Evento('D', 1, true, "%s pisa un pez roca y muere."))
+        costa.añadirEvento(new Evento('N', 2, false, "%s y %s hacen una tregua y hablan sobre las personas que quedan con vida."));
+        costa.añadirEvento(new Evento('D', 1, true, "%s pisa un pez roca y muere."));
+        
+        //Eventos universales
+        arena.añadirEvento(new Evento('U', 2, false, "%s le ruega a %s que le mate, pero este se niega."));
+        bosque.añadirEvento(new Evento('U', 2, false, "%s le ruega a %s que le mate, pero este se niega."));
+        costa.añadirEvento(new Evento('U', 2, false, "%s le ruega a %s que le mate, pero este se niega."));
+        
+        arena.añadirEvento(new Evento('U', 2, true, "%s le ruega a %s que le mate, y este acepta."));
+        bosque.añadirEvento(new Evento('U', 2, true, "%s le ruega a %s que le mate, y este acepta."));
+        costa.añadirEvento(new Evento('U', 2, true, "%s le ruega a %s que le mate, y este acepta."));
     }
 	
     public static void main(String args[]) {

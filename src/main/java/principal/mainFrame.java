@@ -1,21 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package principal;
 
 import java.util.ArrayList;
 import javax.swing.*;
 
-/**
- *
- * @author emilio.jose.varelaso
- */
 public class mainFrame extends javax.swing.JFrame {
 
-    /**
-     * Creates new form mainFrame
-     */
     public mainFrame() {
         initComponents();
     }
@@ -72,8 +61,6 @@ public class mainFrame extends javax.swing.JFrame {
         botonBorrar = new javax.swing.JButton();
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
-        jLabel15 = new javax.swing.JLabel();
-        jLabel16 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
 
@@ -235,12 +222,6 @@ public class mainFrame extends javax.swing.JFrame {
         jLabel14.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel14.setText("-Stats");
 
-        jLabel15.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel15.setText("-Eventos universales");
-
-        jLabel16.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel16.setText("-Distinción dia/noche");
-
         jLabel17.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel17.setText("-Equipos funcionales");
 
@@ -320,11 +301,9 @@ public class mainFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel14)
                     .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel15)
-                    .addComponent(jLabel16)
                     .addComponent(jLabel17)
                     .addComponent(jLabel19))
-                .addGap(166, 166, 166))
+                .addGap(170, 170, 170))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -340,8 +319,7 @@ public class mainFrame extends javax.swing.JFrame {
                     .addComponent(jLabel4)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel6)
-                        .addComponent(jLabel15)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel17)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -379,36 +357,26 @@ public class mainFrame extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(botonAnhadir))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel7)
-                                    .addComponent(displayNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel8)
-                                    .addComponent(displayEquipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(13, 13, 13)
-                                .addComponent(jLabel16)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel7)
+                            .addComponent(displayNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel8)
+                            .addComponent(displayEquipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel19))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel9)
-                            .addComponent(displayPronombres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel17))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel10)
-                                    .addComponent(displayVida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(6, 6, 6)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel11)
-                                    .addComponent(displayMovimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(16, 16, 16)
-                                .addComponent(jLabel19)))
+                            .addComponent(displayPronombres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel10)
+                            .addComponent(displayVida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(6, 6, 6)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel11)
+                            .addComponent(displayMovimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel12)
@@ -417,7 +385,7 @@ public class mainFrame extends javax.swing.JFrame {
                         .addComponent(botonBorrar)))
                 .addGap(43, 43, 43)
                 .addComponent(botonEmpezar, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(504, Short.MAX_VALUE))
+                .addContainerGap(510, Short.MAX_VALUE))
         );
 
         pack();
@@ -454,69 +422,26 @@ public class mainFrame extends javax.swing.JFrame {
             if (checkStats.isSelected()) {
                 if (checkFull()) {
                     if (checkEquipo(fieldEquipo.getText())) {
-                        Personaje nuevo = new Personaje(
-                                fieldNombre.getText(),
-                                fieldPronombres.getText(),
-                                pasarInt(fieldVida.getText()),
-                                pasarInt(fieldMovimiento.getText()),
-                                pasarInt(fieldCarisma.getText())
-                        );
-                        jugadores.add(nuevo);
-                        for (Equipo equipo : equipos) {
-                            if (equipo.nombre.equals(fieldEquipo.getText())) {
-                                equipos.get(equipos.indexOf(equipo)).añadirMiembro(nuevo);
-                                nombres.get(getIndex(fieldEquipo.getText())).addElement(fieldNombre.getText());
-                            }
-                        }
+                        crearPersonajeStats();
                     } else {
                         Equipo nuevoE = new Equipo(fieldEquipo.getText());
                         equipos.add(nuevoE);
                         DefaultListModel empty = new DefaultListModel();
                         nombres.add(empty);
-                        Personaje nuevo = new Personaje(
-                                fieldNombre.getText(),
-                                fieldPronombres.getText(),
-                                pasarInt(fieldVida.getText()),
-                                pasarInt(fieldMovimiento.getText()),
-                                pasarInt(fieldCarisma.getText())
-                        );
-                        jugadores.add(nuevo);
-                        for (Equipo equipo : equipos) {
-                            if (equipo.nombre.equals(fieldEquipo.getText())) {
-                                equipos.get(equipos.indexOf(equipo)).añadirMiembro(nuevo);
-                                nombres.get(getIndex(fieldEquipo.getText())).addElement(fieldNombre.getText());
-                            }
-                        }
+                        crearPersonajeStats();
                         añadirEquipo(fieldEquipo.getText());
                     }
                 }
             } else {
                 if (checkMedio()) {
                     if (checkEquipo(fieldEquipo.getText())) {
-                        Personaje nuevo = new Personaje(fieldNombre.getText(), fieldPronombres.getText());
-                        jugadores.add(nuevo);
-                        for (Equipo equipo : equipos) {
-                            if (equipo.nombre.equals(fieldEquipo.getText())) {
-                                equipos.get(equipos.indexOf(equipo)).añadirMiembro(nuevo);
-                                nombres.get(getIndex(fieldEquipo.getText())).addElement(fieldNombre.getText());
-                            }
-                        }
+                        crearPersonaje();
                     } else {
                         Equipo nuevoE = new Equipo(fieldEquipo.getText());
                         equipos.add(nuevoE);
                         DefaultListModel empty = new DefaultListModel();
                         nombres.add(empty);
-                        Personaje nuevo = new Personaje(
-                                fieldNombre.getText(),
-                                fieldPronombres.getText()
-                        );
-                        jugadores.add(nuevo);
-                        for (Equipo equipo : equipos) {
-                            if (equipo.nombre.equals(fieldEquipo.getText())) {
-                                equipos.get(equipos.indexOf(equipo)).añadirMiembro(nuevo);
-                                nombres.get(getIndex(fieldEquipo.getText())).addElement(fieldNombre.getText());
-                            }
-                        }
+                        crearPersonaje();
                         añadirEquipo(fieldEquipo.getText());
                     }
                 }
@@ -565,6 +490,7 @@ public class mainFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, "No has añadido ningún personaje.");
         } else {
             frameJuego f = new frameJuego();
+            f.setPersonajes(jugadores);
             f.setJugadoresArena(jugadores);
             f.setVisible(true);
             f.setEquipos(equipos);
@@ -713,9 +639,35 @@ public class mainFrame extends javax.swing.JFrame {
         return -1;
     }
 
-    /**
-     * @param args the command line arguments
-     */
+    private void crearPersonajeStats() {
+        Personaje nuevo = new Personaje(
+                fieldNombre.getText(),
+                fieldPronombres.getText(),
+                pasarInt(fieldVida.getText()),
+                pasarInt(fieldMovimiento.getText()),
+                pasarInt(fieldCarisma.getText())
+        );
+        jugadores.add(nuevo);
+        for (Equipo equipo : equipos) {
+            if (equipo.nombre.equals(fieldEquipo.getText())) {
+                equipos.get(equipos.indexOf(equipo)).añadirMiembro(nuevo);
+                nombres.get(getIndex(fieldEquipo.getText())).addElement(fieldNombre.getText());
+            }
+        }
+
+    }
+
+    private void crearPersonaje() {
+        Personaje nuevo = new Personaje(fieldNombre.getText(), fieldPronombres.getText());
+        jugadores.add(nuevo);
+        for (Equipo equipo : equipos) {
+            if (equipo.nombre.equals(fieldEquipo.getText())) {
+                equipos.get(equipos.indexOf(equipo)).añadirMiembro(nuevo);
+                nombres.get(getIndex(fieldEquipo.getText())).addElement(fieldNombre.getText());
+            }
+        }
+    }
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -771,8 +723,6 @@ public class mainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;

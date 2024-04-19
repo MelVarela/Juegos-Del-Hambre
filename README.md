@@ -28,3 +28,17 @@
 
 #### V. 0.3.2
 - Correción de código.
+
+### V. 0.4
+- Nuevas características:  
+	- Añadidos 21 nuevos eventos.  
+	- Ahora los eventos se dividen en 4 tipos:
+		- Eventos especiales, que ocurren bajo ciertas circunstancias como el inicio de los juegos.  
+		- Eventos diurnos, que ocurren durante el día.  
+		- Eventos nocturnos, que ocurren durante la noche.  
+		- Eventos universales, que pueden ocurrir en cualquier momento y lugar.
+- Errores arreglados:  
+	- Mejora de código.  
+	- Los jugadores ya no pueden realizar varias acciones en el mismo tic si se mueven de area.
+	- Arreglados errores gramaticales.
+	- Arreglado un error que permitia al mismo personaje aparecer dos veces en un evento de 3.  
