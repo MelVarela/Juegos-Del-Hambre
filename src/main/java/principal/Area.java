@@ -88,7 +88,7 @@ public class Area {
                 textoEventos += evento(jugador, horaDia);
             } else {
                 Area ar = moverArea(jugador);
-                textoEventos += String.format("%s se ha movido a %s\n", jugador.nombre, ar.nombre);
+                textoEventos += String.format("\n%s se ha movido a %s\n", jugador.nombre, ar.nombre);
                 jugador.setAccion(true);
                 jugRemove.add(jugador);
                 presentes--;
@@ -135,7 +135,7 @@ public class Area {
         int jug = ev.getNumeroPersonajes();
         
         
-        while (jug > presentes || (!(ev.hora == horaDia) || ev.hora == 'U')) {
+        while (jug > presentes || (!(ev.hora == horaDia) || !(ev.hora == 'U'))) {
             ev = eventos.get(alt.nextInt(eventos.size()));
             jug = ev.getNumeroPersonajes();
         }
@@ -156,7 +156,7 @@ public class Area {
             }
             case 2 -> {
                 Personaje p2 = jugadores.get(alt.nextInt(jugadores.size()));
-                while (p2.nombre.equals(jugador.nombre) || !(p2.vivo)) {
+                while (p2.nombre.equals(jugador.nombre) || jugRemove.contains(p2)) {
                     p2 = jugadores.get(alt.nextInt(0, jugadores.size()));
                 }
                 textoEventos += ev.realizarEvento(jugador.nombre, p2.nombre) + "\n";
@@ -167,15 +167,16 @@ public class Area {
                     jugRemove.add(jugador);
                     muertos.add(jugador.nombre);
                     presentes--;
+                    p2.matoA(jugador);
                 }
             }
             case 3 -> {
                 Personaje p2 = jugadores.get(alt.nextInt(jugadores.size()));
                 Personaje p3 = jugadores.get(alt.nextInt(jugadores.size()));
-                while (p2.nombre.equals(jugador.nombre) || !(p2.vivo)) {
+                while (p2.nombre.equals(jugador.nombre) || jugRemove.contains(p2)) {
                     p2 = jugadores.get(alt.nextInt(jugadores.size()));
                 }
-                while (p3.nombre.equals(jugador.nombre) || !(p3.vivo) || p3.nombre.equals(p2.nombre)) {
+                while (p3.nombre.equals(jugador.nombre) || jugRemove.contains(p3) || p3.nombre.equals(p2.nombre)) {
                     p3 = jugadores.get(alt.nextInt(jugadores.size()));
                 }
                 textoEventos += ev.realizarEvento(jugador.nombre, p2.nombre, p3.nombre) + "\n";

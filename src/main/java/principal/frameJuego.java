@@ -20,7 +20,7 @@ public class frameJuego extends javax.swing.JFrame {
     }
     
     public void setPersonajes(ArrayList<Personaje> personajes){
-        this.personajes = personajes;
+        this.personajes.addAll(personajes);
     }
     
     //Declaración de areas
@@ -35,6 +35,7 @@ public class frameJuego extends javax.swing.JFrame {
     
     ArrayList<Area> areas = new ArrayList<>();
     DefaultListModel muertos = new DefaultListModel();
+    DefaultListModel muertosDelay = new DefaultListModel();
     ArrayList<Equipo> equipos = new ArrayList<>();
     ArrayList<Personaje> personajes = new ArrayList<>();
     
@@ -56,13 +57,16 @@ public class frameJuego extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         listaFallecidos = new javax.swing.JList<>();
         jLabel1 = new javax.swing.JLabel();
-        displayMuerte = new javax.swing.JTextField();
+        displayVictimas = new javax.swing.JTextField();
         jScrollPane4 = new javax.swing.JScrollPane();
         areaEventos = new javax.swing.JTextArea();
         pasarDia = new javax.swing.JButton();
         labelDia = new javax.swing.JLabel();
+        labelKillCount = new javax.swing.JLabel();
+        causaMuerte = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(1920, 1080));
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowActivated(java.awt.event.WindowEvent evt) {
@@ -87,6 +91,11 @@ public class frameJuego extends javax.swing.JFrame {
         jScrollPane2.setViewportView(mapa);
 
         jugadoresArea.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jugadoresArea.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jugadoresAreaMouseClicked(evt);
+            }
+        });
         jScrollPane3.setViewportView(jugadoresArea);
 
         conexiones.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -97,17 +106,22 @@ public class frameJuego extends javax.swing.JFrame {
         });
 
         listaFallecidos.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        listaFallecidos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                listaFallecidosMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(listaFallecidos);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel1.setText("Fallecidos:");
 
-        displayMuerte.setEditable(false);
-        displayMuerte.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        displayVictimas.setEditable(false);
+        displayVictimas.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
         areaEventos.setEditable(false);
         areaEventos.setColumns(20);
-        areaEventos.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        areaEventos.setFont(new java.awt.Font("Segoe UI", 0, 22)); // NOI18N
         areaEventos.setRows(5);
         areaEventos.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jScrollPane4.setViewportView(areaEventos);
@@ -123,6 +137,11 @@ public class frameJuego extends javax.swing.JFrame {
         labelDia.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         labelDia.setText("Inicio");
 
+        labelKillCount.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        labelKillCount.setText("0");
+
+        causaMuerte.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -137,25 +156,27 @@ public class frameJuego extends javax.swing.JFrame {
                 .addGap(52, 52, 52)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 777, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(labelDia, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 1078, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(104, 104, 104)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
                                 .addComponent(jLabel1)
                                 .addGap(110, 110, 110))
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(displayMuerte, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addContainerGap(12, Short.MAX_VALUE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(labelDia, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(causaMuerte, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(displayVictimas)
+                                    .addComponent(labelKillCount, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE))
+                                .addGap(22, 22, 22))))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(pasarDia)
-                .addGap(629, 629, 629))
+                .addGap(871, 871, 871))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -163,27 +184,29 @@ public class frameJuego extends javax.swing.JFrame {
                 .addGap(13, 13, 13)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jScrollPane3))
-                                .addGap(32, 32, 32)
-                                .addComponent(conexiones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(22, 22, 22)
-                                .addComponent(jLabel1)
-                                .addGap(18, 18, 18)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(37, 37, 37)
-                        .addComponent(displayMuerte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane3))
+                        .addGap(32, 32, 32)
+                        .addComponent(conexiones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(labelKillCount)
+                        .addGap(5, 5, 5)
+                        .addComponent(displayVictimas, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(causaMuerte, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(labelDia)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 689, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 791, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(50, 50, 50)
                 .addComponent(pasarDia)
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(168, Short.MAX_VALUE))
         );
 
         pack();
@@ -221,6 +244,9 @@ public class frameJuego extends javax.swing.JFrame {
 
     private void pasarDiaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pasarDiaMouseClicked
         accionFalse();
+        for(int i = muertos.size(); i < muertosDelay.size(); i++){
+            muertos.addElement(muertosDelay.get(i));
+        }
         if(finalizado){
         	//Esto evita que la simulación prosiga con un único jugador.
             JOptionPane.showMessageDialog(rootPane, "La simulación ha finalizado");
@@ -248,6 +274,7 @@ public class frameJuego extends javax.swing.JFrame {
     }//GEN-LAST:event_pasarDiaMouseClicked
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        
         //Acciones que se realizan al abrir la ventana.
     	areas.add(arena);
         areas.add(bosque);
@@ -267,7 +294,20 @@ public class frameJuego extends javax.swing.JFrame {
             ticInicial();
         }
         listaFallecidos.setModel(muertos);
+        
     }//GEN-LAST:event_formWindowOpened
+
+    private void listaFallecidosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listaFallecidosMouseClicked
+        Personaje pDisplay = getPersonaje(listaFallecidos.getSelectedValue());
+        labelKillCount.setText(pDisplay.getKillCount());
+        displayVictimas.setText(pDisplay.victimas.substring(4, pDisplay.victimas.length()));
+    }//GEN-LAST:event_listaFallecidosMouseClicked
+
+    private void jugadoresAreaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jugadoresAreaMouseClicked
+        Personaje pDisplay = getPersonaje(jugadoresArea.getSelectedValue());
+        labelKillCount.setText(pDisplay.getKillCount());
+        displayVictimas.setText(pDisplay.victimas);
+    }//GEN-LAST:event_jugadoresAreaMouseClicked
 
     
     private void ticDiurno(){
@@ -275,7 +315,7 @@ public class frameJuego extends javax.swing.JFrame {
         for (Area area : areas) {
             textoFinal += area.realizarEventos('D');
             for (Object muerto : area.darMuertos()) {
-                muertos.addElement(muerto);
+                muertosDelay.addElement(muerto);
                 area.limpiarMuertos();
             }
         }
@@ -287,7 +327,7 @@ public class frameJuego extends javax.swing.JFrame {
         for (Area area : areas) {
             textoFinal += area.realizarEventos('N');
             for (Object muerto : area.darMuertos()) {
-                muertos.addElement(muerto);
+                muertosDelay.addElement(muerto);
                 area.limpiarMuertos();
             }
         }
@@ -299,7 +339,7 @@ public class frameJuego extends javax.swing.JFrame {
         for (Area area : areas) {
             textoFinal += area.realizarEventos('I');
             for (Object muerto : area.darMuertos()) {
-                muertos.addElement(muerto);
+                muertosDelay.addElement(muerto);
                 area.limpiarMuertos();
             }
         }
@@ -325,11 +365,11 @@ public class frameJuego extends javax.swing.JFrame {
         for (Area area : areas) {
             if(!area.jugadores.isEmpty()) return area.jugadores.get(0);
         }
-        return new Personaje();
+        return new Personaje("nadie");
     }
     
     private String getEquipo(Personaje personaje){
-        String devolver = "";
+        String devolver = "de nadie";
         for (Equipo equipo : equipos) {
             if(equipo.getMiembros().contains(personaje)) devolver = equipo.nombre;
         }
@@ -351,85 +391,99 @@ public class frameJuego extends javax.swing.JFrame {
             }
         }
     }
+    
+    private Personaje getPersonaje(String nombre){
+        for (Personaje personaje : personajes) {
+            if(personaje.nombre.equals(nombre)) return personaje;
+        }
+        return null;
+    }
+    
     //Declaracion de eventos
     private void asignarEventos(){
     	//Esta funcion, pues... asigna eventos.
-        arena.añadirEvento(new Evento('I', 1, false, "%s escapa de la arena inicial."));
-        arena.añadirEvento(new Evento('I', 1, false, "%s busca, sin éxito, suministros en la arena inicial."));
-        arena.añadirEvento(new Evento('I', 2, true, "%s es apuñalado por %s por la espalda."));
-        arena.añadirEvento(new Evento('I', 2, false, "%s y %s hacen una pequeña tregua para escapar de la arena inicial juntos."));
-        arena.añadirEvento(new Evento('I', 3, false, "%s, %s y %s se ignoran mutuamente para beneficio de todos."));
-        arena.añadirEvento(new Evento('I',1,false,"%s se tropieza intentando huir de la arena incial."));
-        arena.añadirEvento(new Evento('I',1,false,"%s busca y encuentra suministros en la arena inicial."));
-        arena.añadirEvento(new Evento('I',1,false,"%s encuentra un pequeño cuchillo en la arena inicial."));
-        arena.añadirEvento(new Evento('I',1,false,"%s encuentra armamento en la arena inicial."));
-        arena.añadirEvento(new Evento('I',2,false,"%s intenta huir, mientras que %s le persigue."));
-        arena.añadirEvento(new Evento('I',2,false,"%s huye de la arena, sin saber que %s lo está persiguiendo."));
-        arena.añadirEvento(new Evento('I',3,false,"%s, %s y %s se meten en una pelea, sin embargo, se dan cuenta de que no es el mejor momento y se separan."));
-        arena.añadirEvento(new Evento('I', 2, true, "%s come una manzana que le da %s, sin saber que estaba envenada con cianuro."));
-        arena.añadirEvento(new Evento('I',1,false,"%s agarra una pala."));
-        arena.añadirEvento(new Evento('I',1,false,"%s agarra una mochila y se va."));
-        arena.añadirEvento(new Evento('I',2,false,"%s y %s se pelean por una mochila de suministros, sin darse cuenta de que está vacia."));
-        arena.añadirEvento(new Evento('I',2,false,"%s y %s se pelean por una mochila de suministros."));
-        arena.añadirEvento(new Evento('I',1,false,"%s encuentra una cantimplora."));
-        arena.añadirEvento(new Evento('I',1,false,"%s pilla toda la comida que puede."));
-        arena.añadirEvento(new Evento('I',2,false,"%s le rompe la nariz a %s por un poco de comida."));
-        arena.añadirEvento(new Evento('I',1,false,"%s grita por ayuda."));
-        arena.añadirEvento(new Evento('I', 1, true, "%s agarra una mochila, sin darse cuenta de que era una trampa bomba, y explota en mil pedazos."));
-        arena.añadirEvento(new Evento('D', 1, false, "%s patrulla la arena inicial."));
-        arena.añadirEvento(new Evento('D', 1, false, "%s busca algo util entre lo que queda tras el saqueo inicial."));
-        arena.añadirEvento(new Evento('D', 1, false, "%s encuentra comida en buen estado que nadie recogió durante el saqueo inicial."));
-        arena.añadirEvento(new Evento('D', 2, false, "%s se encuentra por sorpresa a %s, pero se separan rapidamente."));
-        arena.añadirEvento(new Evento('D', 2, true, "%s pensaba que ya no quedaba nadie en la arena inicial, pero %s le demuestra que se equivoca con un par de puñaladas."));
-        arena.añadirEvento(new Evento('D', 1, false, "%s encuentra una sarten."));
-        arena.añadirEvento(new Evento('D', 1, false, "%s no tiene suerte buscando restos del saqueo inicial."));
-        arena.añadirEvento(new Evento('N', 1, false, "%s decide pasar la noche en la arena inicial."));
-        arena.añadirEvento(new Evento('N', 1, false, "%s pasa la noche en vela vigilando la arena inicial."));
-        arena.añadirEvento(new Evento('N', 3, false, "%s, %s y %s se encuentran en la arena inicial, pero todos deciden que están demasiado cansados para pelear."));
-        arena.añadirEvento(new Evento('N', 1, false, "%s duerme en el centro de la arena inicial, con la esperanza de que nadie le vea."));
-        arena.añadirEvento(new Evento('N', 1, false, "A %s le hubiera gustado pasar la noche fuera de la arena inicial, pero no le dio tiempo a escapar."));
-        arena.añadirEvento(new Evento('N', 1, false, "%s se queda dormido mirando los aviones que pasan por encima de la arena inicial."));
-        arena.añadirEvento(new Evento('N', 1, false, "%s se pasa toda la noche intentando emboscar a una linterna que vio en la distancia, sin darse cuenta de que era una farola."));
-        arena.añadirEvento(new Evento('D', 2, true, "%s es golpeado en la cabeza con una sarten por %s"));
-        arena.añadirEvento(new Evento('D', 1, false, "%s se encuentra una sarten que alguine había tirado."));
-        arena.añadirEvento(new Evento('D', 1, false, "%s tira una sarten que tenía por algún motivo."));
-        arena.añadirEvento(new Evento('N', 1, false, "%s duerme en el cemento de la arena inicial."));
-        arena.añadirEvento(new Evento('N', 1, true, "%s intenta subirse a una farola para ver mejor, pero se cae y muere."));
+        arena.añadirEvento(new Evento('I', 1, false, "\n%s escapa de la arena inicial."));
+        arena.añadirEvento(new Evento('I', 1, false, "\n%s busca, sin éxito, suministros en la arena inicial."));
+        arena.añadirEvento(new Evento('I', 2, true, "\n%s es apuñalado por %s por la espalda."));
+        arena.añadirEvento(new Evento('I', 2, false, "\n%s y %s hacen una pequeña tregua para escapar de la arena inicial juntos."));
+        arena.añadirEvento(new Evento('I', 3, false, "\n%s, %s y %s se ignoran mutuamente para beneficio de todos."));
+        arena.añadirEvento(new Evento('I',1,false,"\n%s se tropieza intentando huir de la arena incial."));
+        arena.añadirEvento(new Evento('I',1,false,"\n%s busca y encuentra suministros en la arena inicial."));
+        arena.añadirEvento(new Evento('I',1,false,"\n%s encuentra un pequeño cuchillo en la arena inicial."));
+        arena.añadirEvento(new Evento('I',1,false,"\n%s encuentra armamento en la arena inicial."));
+        arena.añadirEvento(new Evento('I',2,false,"\n%s intenta huir, mientras que %s le persigue."));
+        arena.añadirEvento(new Evento('I',2,false,"\n%s huye de la arena, sin saber que %s lo está persiguiendo."));
+        arena.añadirEvento(new Evento('I',3,false,"\n%s, %s y %s se meten en una pelea, sin embargo, se dan cuenta de que no es el mejor\n momento y se separan."));
+        arena.añadirEvento(new Evento('I', 2, true, "\n%s come una manzana que le da %s, sin saber que estaba envenada con cianuro."));
+        arena.añadirEvento(new Evento('I',1,false,"\n%s agarra una pala."));
+        arena.añadirEvento(new Evento('I',1,false,"\n%s agarra una mochila y se va."));
+        arena.añadirEvento(new Evento('I',2,false,"\n%s y %s se pelean por una mochila de suministros, sin darse cuenta de que está vacia."));
+        arena.añadirEvento(new Evento('I',2,false,"\n%s y %s se pelean por una mochila de suministros."));
+        arena.añadirEvento(new Evento('I',1,false,"\n%s encuentra una cantimplora."));
+        arena.añadirEvento(new Evento('I',1,false,"\n%s pilla toda la comida que puede."));
+        arena.añadirEvento(new Evento('I',2,false,"\n%s le rompe la nariz a %s por un poco de comida."));
+        arena.añadirEvento(new Evento('I',1,false,"\n%s grita por ayuda."));
+        arena.añadirEvento(new Evento('I', 1, true, "\n%s agarra una mochila, sin darse cuenta de que era una trampa bomba, y explota en mil pedazos."));
         
-        bosque.añadirEvento(new Evento('D', 1, false, "%s busca suministros en el bosque."));
-        bosque.añadirEvento(new Evento('D', 1, false, "%s recoge frutos del bosque."));
-        bosque.añadirEvento(new Evento('N', 1, false, "%s duerme en una cueva."));
-        bosque.añadirEvento(new Evento('N', 1, false, "%s sube a un arbol para dormir."));
-        bosque.añadirEvento(new Evento('D',1,false,"%s recoje musgo."));
-        bosque.añadirEvento(new Evento('D',1,false,"%s caza conejos."));
-        bosque.añadirEvento(new Evento('D',1,false,"%s se cae a un río."));
-        bosque.añadirEvento(new Evento('D',2,false,"%s es atacado por un oso, pero %s le ayuda a huir."));
-        bosque.añadirEvento(new Evento('N', 2, false, "%s le roba las cosas a %s mientras duerme."));
-        bosque.añadirEvento(new Evento('D', 1, false, "%s se va de caza."));
-        bosque.añadirEvento(new Evento('D',1,false,"%s descubre una cueva."));
-        bosque.añadirEvento(new Evento('D', 1, true, "%s muere arroyado por un jabalí."));
-        bosque.añadirEvento(new Evento('N', 2, false, "%s deja a %s entrar en su tienda de campaña."));
+        arena.añadirEvento(new Evento('D', 1, false, "\n%s patrulla la arena inicial."));
+        arena.añadirEvento(new Evento('D', 1, false, "\n%s busca algo util entre lo que queda tras el saqueo inicial."));
+        arena.añadirEvento(new Evento('D', 1, false, "\n%s encuentra comida en buen estado que nadie recogió durante el saqueo inicial."));
+        arena.añadirEvento(new Evento('D', 2, false, "\n%s se encuentra por sorpresa a %s, pero se separan rapidamente."));
+        arena.añadirEvento(new Evento('D', 2, true, "\n%s pensaba que ya no quedaba nadie en la arena inicial, pero %s le demuestra que se equivoca\n con un par de puñaladas."));
+        arena.añadirEvento(new Evento('D', 1, false, "\n%s encuentra una sarten."));
+        arena.añadirEvento(new Evento('D', 1, false, "\n%s no tiene suerte buscando restos del saqueo inicial."));
+        arena.añadirEvento(new Evento('N', 1, false, "\n%s decide pasar la noche en la arena inicial."));
+        arena.añadirEvento(new Evento('N', 1, false, "\n%s pasa la noche en vela vigilando la arena inicial."));
+        arena.añadirEvento(new Evento('N', 3, false, "\n%s, %s y %s se encuentran en la arena inicial, pero todos deciden que están demasiado cansados\n para pelear."));
+        arena.añadirEvento(new Evento('N', 1, false, "\n%s duerme en el centro de la arena inicial, con la esperanza de que nadie le vea."));
+        arena.añadirEvento(new Evento('N', 1, false, "\nA %s le hubiera gustado pasar la noche fuera de la arena inicial, pero no le dio tiempo a escapar."));
+        arena.añadirEvento(new Evento('N', 1, false, "\n%s se queda dormido mirando los aviones que pasan por encima de la arena inicial."));
+        arena.añadirEvento(new Evento('N', 1, false, "\n%s se pasa toda la noche intentando emboscar a una linterna que vio en la distancia, sin darse\n cuenta de que era una farola."));
+        arena.añadirEvento(new Evento('D', 2, true, "\n%s es golpeado en la cabeza con una sarten por %s"));
+        arena.añadirEvento(new Evento('D', 1, false, "\n%s se encuentra una sarten que alguien había tirado."));
+        arena.añadirEvento(new Evento('D', 1, false, "\n%s tira una sarten que tenía por algún motivo."));
+        arena.añadirEvento(new Evento('N', 1, false, "\n%s duerme en el cemento de la arena inicial."));
+        arena.añadirEvento(new Evento('N', 1, true, "\n%s intenta subirse a una farola para ver mejor, pero se cae y muere."));
         
-        costa.añadirEvento(new Evento('D', 1, false, "%s se baña en el mar."));
-        costa.añadirEvento(new Evento('D', 2, true, "%s cae en la trampa de confiar en %s, y muere ahogado."));
-        costa.añadirEvento(new Evento('N', 1, false, "%s hace una hoguera con corteza de palmera."));
-        costa.añadirEvento(new Evento('N', 1, false, "%s mira las estrellas mientras escucha el oleaje."));
-        costa.añadirEvento(new Evento('D', 1, false, "%s da un paseo por la playa."));
-        costa.añadirEvento(new Evento('D', 1, false, "%s se lava las heridas con agua de mar."));
-        costa.añadirEvento(new Evento('D', 1, false, "%s hierve agua para obtener agua potable."));
-        costa.añadirEvento(new Evento('D', 2, false, "%s construye un castillo de arena para distraerse de los horrores del capitalismo."));
-        costa.añadirEvento(new Evento('D',1,false,"%s pesca."));
-        costa.añadirEvento(new Evento('N', 2, false, "%s y %s hacen una tregua y hablan sobre las personas que quedan con vida."));
-        costa.añadirEvento(new Evento('D', 1, true, "%s pisa un pez roca y muere."));
+        bosque.añadirEvento(new Evento('D', 1, false, "\n%s busca suministros en el bosque."));
+        bosque.añadirEvento(new Evento('D', 1, false, "\n%s recoge frutos del bosque."));
+        bosque.añadirEvento(new Evento('N', 1, false, "\n%s duerme en una cueva."));
+        bosque.añadirEvento(new Evento('N', 1, false, "\n%s sube a un arbol para dormir."));
+        bosque.añadirEvento(new Evento('D',1,false,"\n%s recoje musgo."));
+        bosque.añadirEvento(new Evento('D',1,false,"\n%s caza conejos."));
+        bosque.añadirEvento(new Evento('D',1,false,"\n%s se cae a un río."));
+        bosque.añadirEvento(new Evento('D',2,false,"\n%s es atacado por un oso, pero %s le ayuda a huir."));
+        bosque.añadirEvento(new Evento('D', 2, true, "\n%s es atacado por un oso, y cuando está huyendo %s le pone la zancadilla."));
+        bosque.añadirEvento(new Evento('N', 2, false, "\n%s le roba las cosas a %s mientras duerme."));
+        bosque.añadirEvento(new Evento('D', 1, false, "\n%s se va de caza."));
+        bosque.añadirEvento(new Evento('D',1,false,"\n%s descubre una cueva."));
+        bosque.añadirEvento(new Evento('D', 1, true, "\n%s muere arroyado por un jabalí."));
+        bosque.añadirEvento(new Evento('N', 2, false, "\n%s deja a %s entrar en su tienda de campaña."));
+        
+        costa.añadirEvento(new Evento('D', 1, false, "\n%s se baña en el mar."));
+        costa.añadirEvento(new Evento('D', 2, true, "\n%s cae en la trampa de confiar en %s, y muere ahogado."));
+        costa.añadirEvento(new Evento('N', 1, false, "\n%s hace una hoguera con corteza de palmera."));
+        costa.añadirEvento(new Evento('N', 1, false, "\n%s mira las estrellas mientras escucha el oleaje."));
+        costa.añadirEvento(new Evento('D', 1, false, "\n%s da un paseo por la playa."));
+        costa.añadirEvento(new Evento('D', 1, false, "\n%s se lava las heridas con agua de mar."));
+        costa.añadirEvento(new Evento('D', 1, false, "\n%s hierve agua para obtener agua potable."));
+        costa.añadirEvento(new Evento('D', 2, false, "\n%s construye un castillo de arena para distraerse de los horrores del capitalismo."));
+        costa.añadirEvento(new Evento('D',1,false,"\n%s pesca."));
+        costa.añadirEvento(new Evento('N', 2, false, "\n%s y %s hacen una tregua y hablan sobre las personas que quedan con vida."));
+        costa.añadirEvento(new Evento('D', 1, true, "\n%s pisa un pez roca y muere."));
         
         //Eventos universales
-        arena.añadirEvento(new Evento('U', 2, false, "%s le ruega a %s que le mate, pero este se niega."));
-        bosque.añadirEvento(new Evento('U', 2, false, "%s le ruega a %s que le mate, pero este se niega."));
-        costa.añadirEvento(new Evento('U', 2, false, "%s le ruega a %s que le mate, pero este se niega."));
+        arena.añadirEvento(new Evento('U', 2, false, "\n%s le ruega a %s que le mate, pero este se niega."));
+        bosque.añadirEvento(new Evento('U', 2, false, "\n%s le ruega a %s que le mate, pero este se niega."));
+        costa.añadirEvento(new Evento('U', 2, false, "\n%s le ruega a %s que le mate, pero este se niega."));
         
-        arena.añadirEvento(new Evento('U', 2, true, "%s le ruega a %s que le mate, y este acepta."));
-        bosque.añadirEvento(new Evento('U', 2, true, "%s le ruega a %s que le mate, y este acepta."));
-        costa.añadirEvento(new Evento('U', 2, true, "%s le ruega a %s que le mate, y este acepta."));
+        arena.añadirEvento(new Evento('U', 2, true, "\n%s le ruega a %s que le mate, y este acepta."));
+        bosque.añadirEvento(new Evento('U', 2, true, "\n%s le ruega a %s que le mate, y este acepta."));
+        costa.añadirEvento(new Evento('U', 2, true, "\n%s le ruega a %s que le mate, y este acepta."));
+        
+        arena.añadirEvento(new Evento('U', 1, true, "\n%s decide que no merece la pena seguir luchando y se suicida."));
+        bosque.añadirEvento(new Evento('U', 1, true, "\n%s decide que no merece la pena seguir luchando y se suicida."));
+        costa.añadirEvento(new Evento('U', 1, true, "\n%s decide que no merece la pena seguir luchando y se suicida."));
     }
 	
     public static void main(String args[]) {
@@ -466,8 +520,9 @@ public class frameJuego extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea areaEventos;
+    private javax.swing.JTextField causaMuerte;
     private javax.swing.JTextField conexiones;
-    private javax.swing.JTextField displayMuerte;
+    private javax.swing.JTextField displayVictimas;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -475,6 +530,7 @@ public class frameJuego extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JList<String> jugadoresArea;
     private javax.swing.JLabel labelDia;
+    private javax.swing.JLabel labelKillCount;
     private javax.swing.JList<String> listaFallecidos;
     private javax.swing.JList<String> mapa;
     private javax.swing.JButton pasarDia;

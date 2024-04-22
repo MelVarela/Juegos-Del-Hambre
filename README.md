@@ -2,6 +2,20 @@
 
 ## Un simulador por Guantes
 
+### V. 0.5
+- Nuevas características:  
+	- Añadido texto provisional en caso de que exista un empate al final de la simulación.
+	- Añadidos 2 nuevos eventos.
+	- Añadida una forma de ver a que personajes mató cada personaje.
+- Errores arreglados:  
+	- Arreglados errores ortográficos
+	- Arreglado un error en el que un personaje podía interactuar con otros de un área que acababa de abandonar.
+	- Arreglado un error que impedia que sucedieran eventos universales.
+- Mejoras de calidad de vida:  
+	- Aumentado el tamaño de las etiquetas de los personajes.
+	- Aumentado el tamaño de letra de los eventos.
+	- Ahora la lista de muertos se actualiza con un tic de retraso, evitando arruinar la sorpresa de cada turno.
+
 ### V. 0.4
 - Nuevas características:  
 	- Añadidos 21 nuevos eventos.  
