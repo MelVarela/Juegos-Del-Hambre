@@ -2,6 +2,7 @@ package principal;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Random;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 
@@ -38,6 +39,8 @@ public class frameJuego extends javax.swing.JFrame {
     DefaultListModel muertosDelay = new DefaultListModel();
     ArrayList<Equipo> equipos = new ArrayList<>();
     ArrayList<Personaje> personajes = new ArrayList<>();
+    
+    Random alt = new Random();
     
     
     /**
@@ -244,6 +247,7 @@ public class frameJuego extends javax.swing.JFrame {
 
     private void pasarDiaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pasarDiaMouseClicked
         accionFalse();
+        int al = alt.nextInt(0, 100);
         for(int i = muertos.size(); i < muertosDelay.size(); i++){
             muertos.addElement(muertosDelay.get(i));
         }
@@ -261,11 +265,19 @@ public class frameJuego extends javax.swing.JFrame {
                     dia++;
                     labelDia.setText(String.format("Dia %d", dia));
                     sumar = false;
-                    ticDiurno();
+                    if(al > 5){
+                        ticDiurno();
+                    }else{
+                        ticEvento();
+                    }
                 }else{
                     sumar = true;
                     labelDia.setText(String.format("Noche %d", dia));
-                    ticNocturno();
+                    if(al > 5){
+                        ticNocturno();
+                    }else{
+                        ticEvento();
+                    }
                 }
             }else{
                 victoria();
@@ -306,7 +318,7 @@ public class frameJuego extends javax.swing.JFrame {
     private void jugadoresAreaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jugadoresAreaMouseClicked
         Personaje pDisplay = getPersonaje(jugadoresArea.getSelectedValue());
         labelKillCount.setText(pDisplay.getKillCount());
-        displayVictimas.setText(pDisplay.victimas);
+        displayVictimas.setText(pDisplay.victimas.substring(4, pDisplay.victimas.length()));
     }//GEN-LAST:event_jugadoresAreaMouseClicked
 
     
@@ -341,6 +353,26 @@ public class frameJuego extends javax.swing.JFrame {
             for (Object muerto : area.darMuertos()) {
                 muertosDelay.addElement(muerto);
                 area.limpiarMuertos();
+            }
+        }
+        areaEventos.setText(textoFinal);
+    }
+    
+    private void ticEvento(){
+        System.out.println("Evento!");
+        String textoFinal = "";
+        int evR = alt.nextInt(1, 2);
+        System.out.println(evR);
+        switch(evR){
+            case 1->{ //Evento pianos
+                textoFinal += "¡Están cayendo pianos del cielo...! Por algún motivo.\n";
+                for (Area area : areas) {
+                    textoFinal += area.realizarEventos('P');
+                    for (Object muerto : area.darMuertos()) {
+                        muertosDelay.addElement(muerto);
+                    area.limpiarMuertos();
+                    }
+                }
             }
         }
         areaEventos.setText(textoFinal);
@@ -402,88 +434,180 @@ public class frameJuego extends javax.swing.JFrame {
     //Declaracion de eventos
     private void asignarEventos(){
     	//Esta funcion, pues... asigna eventos.
-        arena.añadirEvento(new Evento('I', 1, false, "\n%s escapa de la arena inicial."));
-        arena.añadirEvento(new Evento('I', 1, false, "\n%s busca, sin éxito, suministros en la arena inicial."));
-        arena.añadirEvento(new Evento('I', 2, true, "\n%s es apuñalado por %s por la espalda."));
-        arena.añadirEvento(new Evento('I', 2, false, "\n%s y %s hacen una pequeña tregua para escapar de la arena inicial juntos."));
-        arena.añadirEvento(new Evento('I', 3, false, "\n%s, %s y %s se ignoran mutuamente para beneficio de todos."));
-        arena.añadirEvento(new Evento('I',1,false,"\n%s se tropieza intentando huir de la arena incial."));
-        arena.añadirEvento(new Evento('I',1,false,"\n%s busca y encuentra suministros en la arena inicial."));
-        arena.añadirEvento(new Evento('I',1,false,"\n%s encuentra un pequeño cuchillo en la arena inicial."));
-        arena.añadirEvento(new Evento('I',1,false,"\n%s encuentra armamento en la arena inicial."));
-        arena.añadirEvento(new Evento('I',2,false,"\n%s intenta huir, mientras que %s le persigue."));
-        arena.añadirEvento(new Evento('I',2,false,"\n%s huye de la arena, sin saber que %s lo está persiguiendo."));
-        arena.añadirEvento(new Evento('I',3,false,"\n%s, %s y %s se meten en una pelea, sin embargo, se dan cuenta de que no es el mejor\n momento y se separan."));
-        arena.añadirEvento(new Evento('I', 2, true, "\n%s come una manzana que le da %s, sin saber que estaba envenada con cianuro."));
-        arena.añadirEvento(new Evento('I',1,false,"\n%s agarra una pala."));
-        arena.añadirEvento(new Evento('I',1,false,"\n%s agarra una mochila y se va."));
-        arena.añadirEvento(new Evento('I',2,false,"\n%s y %s se pelean por una mochila de suministros, sin darse cuenta de que está vacia."));
-        arena.añadirEvento(new Evento('I',2,false,"\n%s y %s se pelean por una mochila de suministros."));
-        arena.añadirEvento(new Evento('I',1,false,"\n%s encuentra una cantimplora."));
-        arena.añadirEvento(new Evento('I',1,false,"\n%s pilla toda la comida que puede."));
-        arena.añadirEvento(new Evento('I',2,false,"\n%s le rompe la nariz a %s por un poco de comida."));
-        arena.añadirEvento(new Evento('I',1,false,"\n%s grita por ayuda."));
-        arena.añadirEvento(new Evento('I', 1, true, "\n%s agarra una mochila, sin darse cuenta de que era una trampa bomba, y explota en mil pedazos."));
+        arena.añadirEvento(new Evento('I', 1, 'O', "\n%s escapa de la arena inicial."));
+        arena.añadirEvento(new Evento('I', 1, 'O', "\n%s busca, sin éxito, suministros en la arena inicial."));
+        arena.añadirEvento(new Evento('I', 2, 'N', "\n%s es apuñalado por %s por la espalda."));
+        arena.añadirEvento(new Evento('I', 2, 'O', "\n%s y %s hacen una pequeña tregua para escapar de la arena inicial juntos."));
+        arena.añadirEvento(new Evento('I', 3, 'O', "\n%s, %s y %s se ignoran mutuamente para beneficio de todos."));
+        arena.añadirEvento(new Evento('I',1,'O',"\n%s se tropieza intentando huir de la arena incial."));
+        arena.añadirEvento(new Evento('I',1,'O',"\n%s busca y encuentra suministros en la arena inicial."));
+        arena.añadirEvento(new Evento('I',1,'O',"\n%s encuentra un pequeño cuchillo en la arena inicial."));
+        arena.añadirEvento(new Evento('I',1,'O',"\n%s encuentra armamento en la arena inicial."));
+        arena.añadirEvento(new Evento('I',2,'O',"\n%s intenta huir, mientras que %s le persigue."));
+        arena.añadirEvento(new Evento('I',2,'O',"\n%s huye de la arena, sin saber que %s lo está persiguiendo."));
+        arena.añadirEvento(new Evento('I',3,'O',"\n%s, %s y %s se meten en una pelea, sin embargo, se dan cuenta de que no es el mejor\nmomento y se separan."));
+        arena.añadirEvento(new Evento('I', 2, 'N', "\n%s come una manzana que le da %s, sin saber que estaba envenada con cianuro."));
+        arena.añadirEvento(new Evento('I',1,'O',"\n%s agarra una pala."));
+        arena.añadirEvento(new Evento('I',1,'O',"\n%s agarra una mochila y se va."));
+        arena.añadirEvento(new Evento('I',2,'O',"\n%s y %s se pelean por una mochila de suministros, sin darse cuenta de que está vacia."));
+        arena.añadirEvento(new Evento('I',2,'O',"\n%s y %s se pelean por una mochila de suministros."));
+        arena.añadirEvento(new Evento('I',1,'O',"\n%s encuentra una cantimplora."));
+        arena.añadirEvento(new Evento('I',1,'O',"\n%s pilla toda la comida que puede."));
+        arena.añadirEvento(new Evento('I',2,'O',"\n%s le rompe la nariz a %s por un poco de comida."));
+        arena.añadirEvento(new Evento('I',1,'O',"\n%s grita por ayuda."));
+        arena.añadirEvento(new Evento('I', 1, 'N', "\n%s agarra una mochila, sin darse cuenta de que era una trampa bomba, y explota en mil pedazos."));
+        arena.añadirEvento(new Evento('I', 3, 'T', "\n%s, %s y %s se pelean por una mochila, sin darse cuenta de que era una mochila bomba\nque los vuela a todos en mil pedazos."));
+        arena.añadirEvento(new Evento('I', 4, 'T', "\n%s, %s, %s y %s se pelean por una mochila, sin darse cuenta de que era una mochila bomba\nque los vuela a todos en mil pedazos."));
+        arena.añadirEvento(new Evento('I', 1, 'O', "\n%s agarra una pala."));
+        arena.añadirEvento(new Evento('I', 1, 'O', "\n%s agarra un arco, unas flechas y un carcaj."));
+        arena.añadirEvento(new Evento('I', 1, 'O', "\n%s pilla un puñado de cuchillos arrojadizos."));
+        arena.añadirEvento(new Evento('I', 2, 'O', "\n%s le roba un cuchillo a %s."));
+        arena.añadirEvento(new Evento('I', 1, 'O', "\n%s agarra una espada."));
+        arena.añadirEvento(new Evento('I', 1, 'O', "\n%s agarra una lanza."));
+        arena.añadirEvento(new Evento('I', 1, 'O', "\n%s encuentra una mochila llena de explosivos."));
+        arena.añadirEvento(new Evento('I', 1, 'O', "\n%s agarra un kit de primeros auxilios y huye."));
+        arena.añadirEvento(new Evento('I', 1, 'O', "\n%s agarra una hoz."));
+        arena.añadirEvento(new Evento('I', 1, 'O', "\n%s huye con una botella de alcohol y un trapo."));
+        arena.añadirEvento(new Evento('I', 1, 'O', "\n%s agarra un mechero y algo de cuerda."));
+        arena.añadirEvento(new Evento('I', 1, 'O', "\n%s agarra material para pescar."));
         
-        arena.añadirEvento(new Evento('D', 1, false, "\n%s patrulla la arena inicial."));
-        arena.añadirEvento(new Evento('D', 1, false, "\n%s busca algo util entre lo que queda tras el saqueo inicial."));
-        arena.añadirEvento(new Evento('D', 1, false, "\n%s encuentra comida en buen estado que nadie recogió durante el saqueo inicial."));
-        arena.añadirEvento(new Evento('D', 2, false, "\n%s se encuentra por sorpresa a %s, pero se separan rapidamente."));
-        arena.añadirEvento(new Evento('D', 2, true, "\n%s pensaba que ya no quedaba nadie en la arena inicial, pero %s le demuestra que se equivoca\n con un par de puñaladas."));
-        arena.añadirEvento(new Evento('D', 1, false, "\n%s encuentra una sarten."));
-        arena.añadirEvento(new Evento('D', 1, false, "\n%s no tiene suerte buscando restos del saqueo inicial."));
-        arena.añadirEvento(new Evento('N', 1, false, "\n%s decide pasar la noche en la arena inicial."));
-        arena.añadirEvento(new Evento('N', 1, false, "\n%s pasa la noche en vela vigilando la arena inicial."));
-        arena.añadirEvento(new Evento('N', 3, false, "\n%s, %s y %s se encuentran en la arena inicial, pero todos deciden que están demasiado cansados\n para pelear."));
-        arena.añadirEvento(new Evento('N', 1, false, "\n%s duerme en el centro de la arena inicial, con la esperanza de que nadie le vea."));
-        arena.añadirEvento(new Evento('N', 1, false, "\nA %s le hubiera gustado pasar la noche fuera de la arena inicial, pero no le dio tiempo a escapar."));
-        arena.añadirEvento(new Evento('N', 1, false, "\n%s se queda dormido mirando los aviones que pasan por encima de la arena inicial."));
-        arena.añadirEvento(new Evento('N', 1, false, "\n%s se pasa toda la noche intentando emboscar a una linterna que vio en la distancia, sin darse\n cuenta de que era una farola."));
-        arena.añadirEvento(new Evento('D', 2, true, "\n%s es golpeado en la cabeza con una sarten por %s"));
-        arena.añadirEvento(new Evento('D', 1, false, "\n%s se encuentra una sarten que alguien había tirado."));
-        arena.añadirEvento(new Evento('D', 1, false, "\n%s tira una sarten que tenía por algún motivo."));
-        arena.añadirEvento(new Evento('N', 1, false, "\n%s duerme en el cemento de la arena inicial."));
-        arena.añadirEvento(new Evento('N', 1, true, "\n%s intenta subirse a una farola para ver mejor, pero se cae y muere."));
+        arena.añadirEvento(new Evento('D', 1, 'O', "\n%s patrulla la arena inicial."));
+        arena.añadirEvento(new Evento('D', 1, 'O', "\n%s explora la arena incial."));
+        arena.añadirEvento(new Evento('D', 1, 'O', "\n%s busca algo util entre lo que queda tras el saqueo inicial."));
+        arena.añadirEvento(new Evento('D', 1, 'O', "\n%s encuentra comida en buen estado que nadie recogió durante el saqueo inicial."));
+        arena.añadirEvento(new Evento('D', 2, 'O', "\n%s se encuentra por sorpresa a %s, pero se separan rápidamente."));
+        arena.añadirEvento(new Evento('D', 2, 'N', "\n%s pensaba que ya no quedaba nadie en la arena inicial, pero %s le demuestra que se equivoca\ncon un par de puñaladas."));
+        arena.añadirEvento(new Evento('D', 1, 'O', "\n%s encuentra una sarten."));
+        arena.añadirEvento(new Evento('D', 1, 'O', "\n%s no tiene suerte buscando restos del saqueo inicial."));
+        arena.añadirEvento(new Evento('N', 1, 'O', "\n%s decide pasar la noche en la arena inicial."));
+        arena.añadirEvento(new Evento('N', 1, 'O', "\n%s pasa la noche en vela vigilando la arena inicial."));
+        arena.añadirEvento(new Evento('N', 3, 'O', "\n%s, %s y %s se encuentran en la arena inicial, pero todos deciden que están demasiado cansados\npara pelear."));
+        arena.añadirEvento(new Evento('N', 1, 'O', "\n%s duerme en el centro de la arena inicial, con la esperanza de que nadie le vea."));
+        arena.añadirEvento(new Evento('N', 1, 'O', "\nA %s le hubiera gustado pasar la noche fuera de la arena inicial, pero no le dio tiempo a escapar."));
+        arena.añadirEvento(new Evento('N', 1, 'O', "\n%s se queda dormido mirando los aviones que pasan por encima de la arena inicial."));
+        arena.añadirEvento(new Evento('N', 1, 'O', "\n%s se pasa toda la noche intentando emboscar a una linterna que vio en la distancia, sin darse\ncuenta de que era una farola."));
+        arena.añadirEvento(new Evento('D', 2, 'N', "\n%s es golpeado en la cabeza con una sarten por %s"));
+        arena.añadirEvento(new Evento('D', 1, 'O', "\n%s se encuentra una sarten que alguien había tirado."));
+        arena.añadirEvento(new Evento('D', 1, 'O', "\n%s tira una sarten que tenía por algún motivo."));
+        arena.añadirEvento(new Evento('N', 1, 'O', "\n%s duerme en el cemento de la arena inicial."));
+        arena.añadirEvento(new Evento('N', 1, 'N', "\n%s intenta subirse a una farola para ver mejor, pero se cae y muere."));
+        arena.añadirEvento(new Evento('D', 3, 'S', "\n%s, %s y %s se meten en una pelea. El primero de ellos gana, y mata a los otros dos."));
+        arena.añadirEvento(new Evento('D', 2, 'O', "\n%s le atiende las heridas a %s."));
+        arena.añadirEvento(new Evento('D',3 ,'O', "\n%s escucha a %s y %s hablando en la distancia."));
+        arena.añadirEvento(new Evento('D', 2, 'O', "\n%s y %s se separan para buscar recursos."));
         
-        bosque.añadirEvento(new Evento('D', 1, false, "\n%s busca suministros en el bosque."));
-        bosque.añadirEvento(new Evento('D', 1, false, "\n%s recoge frutos del bosque."));
-        bosque.añadirEvento(new Evento('N', 1, false, "\n%s duerme en una cueva."));
-        bosque.añadirEvento(new Evento('N', 1, false, "\n%s sube a un arbol para dormir."));
-        bosque.añadirEvento(new Evento('D',1,false,"\n%s recoje musgo."));
-        bosque.añadirEvento(new Evento('D',1,false,"\n%s caza conejos."));
-        bosque.añadirEvento(new Evento('D',1,false,"\n%s se cae a un río."));
-        bosque.añadirEvento(new Evento('D',2,false,"\n%s es atacado por un oso, pero %s le ayuda a huir."));
-        bosque.añadirEvento(new Evento('D', 2, true, "\n%s es atacado por un oso, y cuando está huyendo %s le pone la zancadilla."));
-        bosque.añadirEvento(new Evento('N', 2, false, "\n%s le roba las cosas a %s mientras duerme."));
-        bosque.añadirEvento(new Evento('D', 1, false, "\n%s se va de caza."));
-        bosque.añadirEvento(new Evento('D',1,false,"\n%s descubre una cueva."));
-        bosque.añadirEvento(new Evento('D', 1, true, "\n%s muere arroyado por un jabalí."));
-        bosque.añadirEvento(new Evento('N', 2, false, "\n%s deja a %s entrar en su tienda de campaña."));
+        bosque.añadirEvento(new Evento('D', 1, 'O', "\n%s busca suministros en el bosque."));
+        bosque.añadirEvento(new Evento('D', 1, 'O', "\n%s recoge frutos del bosque."));
+        bosque.añadirEvento(new Evento('D', 1, 'O', "\n%s recoge fruta de un arbol."));
+        bosque.añadirEvento(new Evento('N', 1, 'O', "\n%s duerme en una cueva."));
+        bosque.añadirEvento(new Evento('N', 1, 'O', "\n%s sube a un arbol para dormir."));
+        bosque.añadirEvento(new Evento('D',1,'O',"\n%s recoje musgo."));
+        bosque.añadirEvento(new Evento('D',1,'O',"\n%s caza conejos."));
+        bosque.añadirEvento(new Evento('D',1,'O',"\n%s se cae a un río."));
+        bosque.añadirEvento(new Evento('D',2,'O',"\n%s es atacado por un oso, pero %s le ayuda a huir."));
+        bosque.añadirEvento(new Evento('D', 2, 'N', "\n%s es atacado por un oso, y cuando está huyendo %s le pone la zancadilla."));
+        bosque.añadirEvento(new Evento('N', 2, 'O', "\n%s le roba las cosas a %s mientras duerme."));
+        bosque.añadirEvento(new Evento('D', 1, 'O', "\n%s se va de caza."));
+        bosque.añadirEvento(new Evento('D',1,'O',"\n%s descubre una cueva."));
+        bosque.añadirEvento(new Evento('D', 1, 'N', "\n%s muere arroyado por un jabalí."));
+        bosque.añadirEvento(new Evento('N', 2, 'O', "\n%s deja a %s entrar en su tienda de campaña."));
+        bosque.añadirEvento(new Evento('D', 1, 'O', "\n%s recoge setas."));
+        bosque.añadirEvento(new Evento('D', 1, 'N', "\n%s recoge setas, sin darse cuenta de que son venenosas."));
+        bosque.añadirEvento(new Evento('N', 4, 'O', "\n%s, %s, %s y %s cuentan historias de terror alrededor del fuego."));
+        bosque.añadirEvento(new Evento('D', 1, 'O',"\n%s se esconde en los arbustos."));
+        bosque.añadirEvento(new Evento('D', 1, 'O', "\n%s practica su arquería."));
+        bosque.añadirEvento(new Evento('D', 1, 'O', "\n%s se pincha mientras recoge bayas."));
+        bosque.añadirEvento(new Evento('D', 1, 'O', "\n%s busca leña para hacer un fuego."));
+        bosque.añadirEvento(new Evento('D', 1, 'O', "\n%s intenta pescar, pero se cae al río."));
+        bosque.añadirEvento(new Evento('D', 1, 'O', "\n%s recoge flores."));
         
-        costa.añadirEvento(new Evento('D', 1, false, "\n%s se baña en el mar."));
-        costa.añadirEvento(new Evento('D', 2, true, "\n%s cae en la trampa de confiar en %s, y muere ahogado."));
-        costa.añadirEvento(new Evento('N', 1, false, "\n%s hace una hoguera con corteza de palmera."));
-        costa.añadirEvento(new Evento('N', 1, false, "\n%s mira las estrellas mientras escucha el oleaje."));
-        costa.añadirEvento(new Evento('D', 1, false, "\n%s da un paseo por la playa."));
-        costa.añadirEvento(new Evento('D', 1, false, "\n%s se lava las heridas con agua de mar."));
-        costa.añadirEvento(new Evento('D', 1, false, "\n%s hierve agua para obtener agua potable."));
-        costa.añadirEvento(new Evento('D', 2, false, "\n%s construye un castillo de arena para distraerse de los horrores del capitalismo."));
-        costa.añadirEvento(new Evento('D',1,false,"\n%s pesca."));
-        costa.añadirEvento(new Evento('N', 2, false, "\n%s y %s hacen una tregua y hablan sobre las personas que quedan con vida."));
-        costa.añadirEvento(new Evento('D', 1, true, "\n%s pisa un pez roca y muere."));
+        costa.añadirEvento(new Evento('D', 1, 'O', "\n%s se baña en el mar."));
+        costa.añadirEvento(new Evento('D', 2, 'N', "\n%s cae en la trampa de confiar en %s, y muere ahogado."));
+        costa.añadirEvento(new Evento('N', 1, 'O', "\n%s hace una hoguera con corteza de palmera."));
+        costa.añadirEvento(new Evento('N', 1, 'O', "\n%s mira las estrellas mientras escucha el oleaje."));
+        costa.añadirEvento(new Evento('D', 1, 'O', "\n%s da un paseo por la playa."));
+        costa.añadirEvento(new Evento('D', 1, 'O', "\n%s se lava las heridas con agua de mar."));
+        costa.añadirEvento(new Evento('D', 1, 'O', "\n%s hierve agua para obtener agua potable."));
+        costa.añadirEvento(new Evento('D', 2, 'O', "\n%s construye un castillo de arena para distraerse de los horrores del capitalismo."));
+        costa.añadirEvento(new Evento('D',1,'O',"\n%s pesca."));
+        costa.añadirEvento(new Evento('N', 2, 'O', "\n%s y %s hacen una tregua y hablan sobre las personas que quedan con vida."));
+        costa.añadirEvento(new Evento('D', 1, 'N', "\n%s pisa un pez roca y muere."));
+        costa.añadirEvento(new Evento('D', 1, 'O', "\n%s construye una cabaña."));
+        costa.añadirEvento(new Evento('D', 2, 'O', "\n%s y %s construyen una cabaña juntos."));
+        costa.añadirEvento(new Evento('D', 1, 'O', "\n%s pesca con un tridente."));
+        costa.añadirEvento(new Evento('D', 1, 'O', "\n%s recoge conchas."));
+        costa.añadirEvento(new Evento('D', 1, 'O', "\n%s ve humo en la distancia, pero decide no investigar."));
+        costa.añadirEvento(new Evento('N', 1, 'O', "\n%s ve una hoguera en la distancia, pero decide no investigar."));
+        costa.añadirEvento(new Evento('N', 1, 'O', "\n%s se maravilla con el reflejo de la luna en el mar."));
         
         //Eventos universales
-        arena.añadirEvento(new Evento('U', 2, false, "\n%s le ruega a %s que le mate, pero este se niega."));
-        bosque.añadirEvento(new Evento('U', 2, false, "\n%s le ruega a %s que le mate, pero este se niega."));
-        costa.añadirEvento(new Evento('U', 2, false, "\n%s le ruega a %s que le mate, pero este se niega."));
+        arena.añadirEvento(new Evento('U', 2, 'O', "\n%s le ruega a %s que le mate, pero este se niega."));
+        bosque.añadirEvento(new Evento('U', 2, 'O', "\n%s le ruega a %s que le mate, pero este se niega."));
+        costa.añadirEvento(new Evento('U', 2, 'O', "\n%s le ruega a %s que le mate, pero este se niega."));
         
-        arena.añadirEvento(new Evento('U', 2, true, "\n%s le ruega a %s que le mate, y este acepta."));
-        bosque.añadirEvento(new Evento('U', 2, true, "\n%s le ruega a %s que le mate, y este acepta."));
-        costa.añadirEvento(new Evento('U', 2, true, "\n%s le ruega a %s que le mate, y este acepta."));
+        arena.añadirEvento(new Evento('U', 2, 'N', "\n%s le ruega a %s que le mate, y este acepta."));
+        bosque.añadirEvento(new Evento('U', 2, 'N', "\n%s le ruega a %s que le mate, y este acepta."));
+        costa.añadirEvento(new Evento('U', 2, 'N', "\n%s le ruega a %s que le mate, y este acepta."));
         
-        arena.añadirEvento(new Evento('U', 1, true, "\n%s decide que no merece la pena seguir luchando y se suicida."));
-        bosque.añadirEvento(new Evento('U', 1, true, "\n%s decide que no merece la pena seguir luchando y se suicida."));
-        costa.añadirEvento(new Evento('U', 1, true, "\n%s decide que no merece la pena seguir luchando y se suicida."));
+        arena.añadirEvento(new Evento('U', 1, 'N', "\n%s decide que no merece la pena seguir luchando y se suicida."));
+        bosque.añadirEvento(new Evento('U', 1, 'N', "\n%s decide que no merece la pena seguir luchando y se suicida."));
+        costa.añadirEvento(new Evento('U', 1, 'N', "\n%s decide que no merece la pena seguir luchando y se suicida."));
+        
+        arena.añadirEvento(new Evento('U', 1, 'O', "\n%s se autolesiona."));
+        bosque.añadirEvento(new Evento('U', 1, 'O', "\n%s se autolesiona."));
+        costa.añadirEvento(new Evento('U', 1, 'O', "\n%s se autolesiona."));
+        
+        arena.añadirEvento(new Evento('U', 1, 'O', "\n%s piensa sobre su hogar."));
+        bosque.añadirEvento(new Evento('U', 1, 'O', "\n%s piensa sobre su hogar."));
+        costa.añadirEvento(new Evento('U', 1, 'O', "\n%s piensa sobre su hogar."));
+        
+        arena.añadirEvento(new Evento('U', 1, 'O', "\n%s piensa sobre ganar."));
+        bosque.añadirEvento(new Evento('U', 1, 'O', "\n%s piensa sobre ganar."));
+        costa.añadirEvento(new Evento('U', 1, 'O', "\n%s piensa sobre ganar."));
+        
+        //Eventos semi-universales
+        arena.añadirEvento(new Evento('N', 2, 'O', "\n%s deja a %s entrar en su refugio."));
+        arena.añadirEvento(new Evento('N', 2, 'O', "\n%s y %s duermen juntos."));
+        arena.añadirEvento(new Evento('D', 2, 'O', "\n%s y %s trabajan juntos durante todo el día."));
+        arena.añadirEvento(new Evento('D', 1, 'O', "\n%s intenta dormir durante todo el día, pero no lo consigue."));
+        arena.añadirEvento(new Evento('D', 1, 'O', "\n%s duerme durante todo el día."));
+        
+        bosque.añadirEvento(new Evento('N', 2, 'O', "\n%s deja a %s entrar en su refugio."));
+        bosque.añadirEvento(new Evento('N', 2, 'O', "\n%s y %s duermen juntos."));
+        bosque.añadirEvento(new Evento('D', 2, 'O', "\n%s y %s trabajan juntos durante todo el día."));
+        bosque.añadirEvento(new Evento('D', 1, 'O', "\n%s intenta dormir durante todo el día, pero no lo consigue."));
+        bosque.añadirEvento(new Evento('D', 1, 'O', "\n%s duerme durante todo el día."));
+        
+        costa.añadirEvento(new Evento('N', 2, 'O', "\n%s deja a %s entrar en su refugio."));
+        costa.añadirEvento(new Evento('N', 2, 'O', "\n%s y %s duermen juntos."));
+        costa.añadirEvento(new Evento('D', 2, 'O', "\n%s y %s trabajan juntos durante todo el día."));
+        costa.añadirEvento(new Evento('D', 1, 'O', "\n%s intenta dormir durante todo el día, pero no lo consigue."));
+        costa.añadirEvento(new Evento('D', 1, 'O', "\n%s duerme durante todo el día."));
+        
+        //Pianos
+        arena.añadirEvento(new Evento('P', 1, 'O', "\n%s consigue evitar los pianos."));
+        arena.añadirEvento(new Evento('P', 1, 'O', "\n%s evita un piano por los pelos."));
+        arena.añadirEvento(new Evento('P', 1, 'O', "\nA %s le cae un piano en la cabeza, pero por suerte era un piano de juguete."));
+        arena.añadirEvento(new Evento('P', 1, 'N', "\n%s no consigue evitar los pianos, y le cae uno de cola en la cabeza."));
+        arena.añadirEvento(new Evento('P', 1, 'N', "\nCuando %s pensaba que había sobrevivido, le cae un órgano en la cabeza."));
+        arena.añadirEvento(new Evento('P', 2, 'S', "\n%s aprovecha para dejar inmovilizado a %s, a quien le cae un piano gigante en la cabeza."));
+        
+        bosque.añadirEvento(new Evento('P', 1, 'O', "\n%s consigue evitar los pianos."));
+        bosque.añadirEvento(new Evento('P', 1, 'O', "\n%s evita un piano por los pelos."));
+        bosque.añadirEvento(new Evento('P', 1, 'O', "\nA %s le cae un piano en la cabeza, pero por suerte era un piano de juguete."));
+        bosque.añadirEvento(new Evento('P', 1, 'O', "\n%s consigue evitar los pianos metiendose en una cueva."));
+        bosque.añadirEvento(new Evento('P', 1, 'N', "\n%s no consigue evitar los pianos, y le cae uno de cola en la cabeza."));
+        bosque.añadirEvento(new Evento('P', 1, 'N', "\nCuando %s pensaba que había sobrevivido, le cae un órgano en la cabeza."));
+        bosque.añadirEvento(new Evento('P', 2, 'S', "\n%s aprovecha para dejar inmovilizado a %s, a quien le cae un piano gigante en la cabeza."));
+        
+        costa.añadirEvento(new Evento('P', 1, 'O', "\n%s consigue evitar los pianos."));
+        costa.añadirEvento(new Evento('P', 1, 'O', "\n%s evita un piano por los pelos."));
+        costa.añadirEvento(new Evento('P', 1, 'O', "\nA %s le cae un piano en la cabeza, pero por suerte era un piano de juguete."));
+        costa.añadirEvento(new Evento('P', 1, 'O', "\n%s consigue evitar los pianos sumergiendose en el mar."));
+        costa.añadirEvento(new Evento('P', 1, 'N', "\n%s no consigue evitar los pianos, y le cae uno de cola en la cabeza."));
+        costa.añadirEvento(new Evento('P', 1, 'N', "\nCuando %s pensaba que había sobrevivido, le cae un órgano en la cabeza."));
+        costa.añadirEvento(new Evento('P', 2, 'S', "\n%s aprovecha para dejar inmovilizado a %s, a quien le cae un piano gigante en la cabeza."));
+        
     }
 	
     public static void main(String args[]) {

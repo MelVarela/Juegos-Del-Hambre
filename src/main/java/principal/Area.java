@@ -84,9 +84,11 @@ public class Area {
                 continue;
             }
             int i = alt.nextInt(0, 100);
-            if (i > 15) {
+            if (i > 15 + jugador.ganasMover || (horaDia == 'P')) {
                 textoEventos += evento(jugador, horaDia);
+                jugador.ganasMover += 5;
             } else {
+                jugador.ganasMover = 0;
                 Area ar = moverArea(jugador);
                 textoEventos += String.format("\n%s se ha movido a %s\n", jugador.nombre, ar.nombre);
                 jugador.setAccion(true);
@@ -134,11 +136,18 @@ public class Area {
         
         int jug = ev.getNumeroPersonajes();
         
-        
-        while (jug > presentes || (!(ev.hora == horaDia) || !(ev.hora == 'U'))) {
-            ev = eventos.get(alt.nextInt(eventos.size()));
-            jug = ev.getNumeroPersonajes();
+        if(horaDia == 'P'){
+            while (jug > presentes || !(ev.hora == horaDia)) {
+                ev = eventos.get(alt.nextInt(eventos.size()));
+                jug = ev.getNumeroPersonajes();
+            }
+        }else{
+            while (jug > presentes || (!(ev.hora == horaDia) && !(ev.hora == 'U'))) {
+                ev = eventos.get(alt.nextInt(eventos.size()));
+                jug = ev.getNumeroPersonajes();
+            }
         }
+        
         
         
         
@@ -146,7 +155,7 @@ public class Area {
             case 1 -> {
                 textoEventos += ev.realizarEvento(jugador.nombre) + "\n";
                 jugador.setAccion(true);
-                if (ev.letal && jugador.vivo) {
+                if ((ev.tipoLetal != 'O') && jugador.vivo) {
                     int indtemp = jugadores.indexOf(jugador);
                     jugadores.get(indtemp).morir();
                     jugRemove.add(jugador);
@@ -161,13 +170,28 @@ public class Area {
                 }
                 textoEventos += ev.realizarEvento(jugador.nombre, p2.nombre) + "\n";
                 jugador.setAccion(true);
-                if (ev.letal) {
-                    int indtemp = jugadores.indexOf(jugador);
-                    jugadores.get(indtemp).morir();
-                    jugRemove.add(jugador);
-                    muertos.add(jugador.nombre);
-                    presentes--;
-                    p2.matoA(jugador);
+                if (ev.tipoLetal != 'O') {
+                    switch(ev.tipoLetal){
+                        case 'N'->{
+                            int indtemp = jugadores.indexOf(jugador);
+                            jugadores.get(indtemp).morir();
+                            jugRemove.add(jugador);
+                            muertos.add(jugador.nombre);
+                            presentes--;
+                            p2.matoA(jugador);
+                        }
+                        case 'T'->{
+                            int indtemp = jugadores.indexOf(jugador);
+                            int indtemp2 = jugadores.indexOf(p2);
+                            jugadores.get(indtemp).morir();
+                            jugadores.get(indtemp2).morir();
+                            jugRemove.add(jugador);
+                            jugRemove.add(p2);
+                            muertos.add(jugador.nombre);
+                            muertos.add(p2.nombre);
+                            presentes -= 2;
+                        }
+                    }
                 }
             }
             case 3 -> {
@@ -181,12 +205,110 @@ public class Area {
                 }
                 textoEventos += ev.realizarEvento(jugador.nombre, p2.nombre, p3.nombre) + "\n";
                 jugador.setAccion(true);
-                if (ev.letal) {
-                    int indtemp = jugadores.indexOf(jugador);
-                    jugadores.get(indtemp).morir();
-                    jugRemove.add(jugador);
-                    muertos.add(jugador.nombre);
-                    presentes--;
+                if (ev.tipoLetal != 'O') {
+                    switch(ev.tipoLetal){
+                        case 'N'->{
+                            int indtemp = jugadores.indexOf(jugador);
+                            jugadores.get(indtemp).morir();
+                            jugRemove.add(jugador);
+                            muertos.add(jugador.nombre);
+                            presentes--;
+                            p2.matoA(jugador);
+                            p3.matoA(jugador);
+                        }
+                        case 'T'->{
+                            int indtemp = jugadores.indexOf(jugador);
+                            int indtemp2 = jugadores.indexOf(p2);
+                            int indtemp3 = jugadores.indexOf(p3);
+                            jugadores.get(indtemp).morir();
+                            jugadores.get(indtemp2).morir();
+                            jugadores.get(indtemp3).morir();
+                            jugRemove.add(jugador);
+                            jugRemove.add(p2);
+                            jugRemove.add(p3);
+                            muertos.add(jugador.nombre);
+                            muertos.add(p2.nombre);
+                            muertos.add(p3.nombre);
+                            presentes -= 3;
+                        }
+                        case 'S'->{
+                            int indtemp2 = jugadores.indexOf(p2);
+                            int indtemp3 = jugadores.indexOf(p3);
+                            jugadores.get(indtemp2).morir();
+                            jugadores.get(indtemp3).morir();
+                            jugRemove.add(p2);
+                            jugRemove.add(p3);
+                            muertos.add(p2.nombre);
+                            muertos.add(p3.nombre);
+                            presentes -= 2;
+                            jugador.matoA(p2, p3);
+                        }
+                    }
+                }
+            }
+            case 4->{
+                Personaje p2 = jugadores.get(alt.nextInt(jugadores.size()));
+                Personaje p3 = jugadores.get(alt.nextInt(jugadores.size()));
+                Personaje p4 = jugadores.get(alt.nextInt(jugadores.size()));
+                while (p2.nombre.equals(jugador.nombre) || jugRemove.contains(p2)) {
+                    p2 = jugadores.get(alt.nextInt(jugadores.size()));
+                }
+                while (p3.nombre.equals(jugador.nombre) || jugRemove.contains(p3) || p3.nombre.equals(p2.nombre)) {
+                    p3 = jugadores.get(alt.nextInt(jugadores.size()));
+                }
+                while (p4.nombre.equals(jugador.nombre) || jugRemove.contains(p4) || p4.nombre.equals(p2.nombre) || p4.nombre.equals(p3.nombre)) {
+                    p4 = jugadores.get(alt.nextInt(jugadores.size()));
+                }
+                textoEventos += ev.realizarEvento(jugador.nombre, p2.nombre, p3.nombre, p4.nombre) + "\n";
+                jugador.setAccion(true);
+                if (ev.tipoLetal != 'O') {
+                    switch(ev.tipoLetal){
+                        case 'N'->{
+                            int indtemp = jugadores.indexOf(jugador);
+                            jugadores.get(indtemp).morir();
+                            jugRemove.add(jugador);
+                            muertos.add(jugador.nombre);
+                            presentes--;
+                            p2.matoA(jugador);
+                            p3.matoA(jugador);
+                            p4.matoA(jugador);
+                        }
+                        case 'T'->{
+                            int indtemp = jugadores.indexOf(jugador);
+                            int indtemp2 = jugadores.indexOf(p2);
+                            int indtemp3 = jugadores.indexOf(p3);
+                            int indtemp4 = jugadores.indexOf(p4);
+                            jugadores.get(indtemp).morir();
+                            jugadores.get(indtemp2).morir();
+                            jugadores.get(indtemp3).morir();
+                            jugadores.get(indtemp4).morir();
+                            jugRemove.add(jugador);
+                            jugRemove.add(p2);
+                            jugRemove.add(p3);
+                            jugRemove.add(p4);
+                            muertos.add(jugador.nombre);
+                            muertos.add(p2.nombre);
+                            muertos.add(p3.nombre);
+                            muertos.add(p4.nombre);
+                            presentes -= 4;
+                        }
+                        case 'S'->{
+                            int indtemp2 = jugadores.indexOf(p2);
+                            int indtemp3 = jugadores.indexOf(p3);
+                            int indtemp4 = jugadores.indexOf(p4);
+                            jugadores.get(indtemp2).morir();
+                            jugadores.get(indtemp3).morir();
+                            jugadores.get(indtemp4).morir();
+                            jugRemove.add(p2);
+                            jugRemove.add(p3);
+                            jugRemove.add(p4);
+                            muertos.add(p2.nombre);
+                            muertos.add(p3.nombre);
+                            muertos.add(p4.nombre);
+                            presentes -= 3;
+                            jugador.matoA(p2, p3, p4);
+                        }
+                    }
                 }
             }
         }

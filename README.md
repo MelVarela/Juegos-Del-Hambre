@@ -2,6 +2,17 @@
 
 ## Un simulador por Guantes
 
+### V. 0.6
+- Nuevas características:  
+	- Añadidos 50 nuevos eventos.  
+	- Ahora los personajes tendrán mas posibilidades de moverse si pasan mucho tiempo en la misma zona.
+	- Añadido un sistema de eventos, así como un evento.
+- Errores arreglados:  
+	- Arreglado un error de display respecto a las victimas de los personajes que habían muerto.
+	- Arreglados pequeños errores de consistencia visual.
+- Mejoras de calidad de vida:
+	- Aumentado el tamaño del display de nombres.
+
 ### V. 0.5
 - Nuevas características:  
 	- Añadido texto provisional en caso de que exista un empate al final de la simulación.
