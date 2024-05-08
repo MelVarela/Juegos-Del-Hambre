@@ -382,7 +382,7 @@ public class frameJuego extends javax.swing.JFrame {
     	//Si detecta uno o menos jugadores, declara una victoria.
         int totalJug = 0;
         for (Area area : areas) {
-            for (Personaje pers : area.jugadores) {
+            for (Personaje pers : area.personajes) {
                 totalJug++;
             }
         }
@@ -395,7 +395,7 @@ public class frameJuego extends javax.swing.JFrame {
     
     private Personaje getGanador(){
         for (Area area : areas) {
-            if(!area.jugadores.isEmpty()) return area.jugadores.get(0);
+            if(!area.personajes.isEmpty()) return area.personajes.get(0);
         }
         return new Personaje("nadie");
     }
@@ -418,7 +418,7 @@ public class frameJuego extends javax.swing.JFrame {
     
     private void accionFalse(){
         for (Area area : areas) {
-            for (Personaje personaje : area.jugadores){
+            for (Personaje personaje : area.personajes){
                 personaje.setAccion(false);
             }
         }

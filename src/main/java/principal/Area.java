@@ -7,14 +7,16 @@ import javax.swing.DefaultListModel;
 public class Area {
 
     public String nombre;
-    public ArrayList<Personaje> jugadores = new ArrayList<>();
+    public ArrayList<Personaje> personajes = new ArrayList<>();
     public ArrayList<Area> conexiones = new ArrayList<>();
     public ArrayList<Evento> eventos = new ArrayList<>();
     public ArrayList<String> muertos = new ArrayList<>();
     public int presentes = 0;
 
     private ArrayList<Personaje> jugRemove = new ArrayList<>();
-
+    
+    private Random alt = new Random();
+    
     Area(String nombre) {
         this.nombre = nombre;
     }
@@ -34,19 +36,19 @@ public class Area {
     }
 
     public void añadirPersonaje(Personaje personaje) {
-        jugadores.add(personaje);
+        personajes.add(personaje);
         presentes++;
     }
 
     public void eliminarPersonaje(Personaje personaje) {
-        jugadores.remove(personaje);
+        personajes.remove(personaje);
         presentes--;
     }
 
     public String getStringJugadores() {
         String devolver = "";
 
-        for (Personaje personaje : jugadores) {
+        for (Personaje personaje : personajes) {
             devolver += personaje + ",";
         }
 
@@ -56,7 +58,7 @@ public class Area {
     public DefaultListModel devolverModeloJugadores() {
         DefaultListModel devolver = new DefaultListModel();
 
-        for (Personaje jugadore : jugadores) {
+        for (Personaje jugadore : personajes) {
             devolver.addElement(jugadore.nombre);
         }
 
@@ -64,7 +66,7 @@ public class Area {
     }
 
     public void setPersonajes(ArrayList<Personaje> personajes) {
-        jugadores = personajes;
+        this.personajes = personajes;
         for (Personaje personaje : personajes) {
             presentes++;
         }
@@ -76,10 +78,9 @@ public class Area {
 
     public String realizarEventos(char horaDia) {
         String textoEventos = "";
-        Random alt = new Random();
         jugRemove = new ArrayList<>();
 
-        for (Personaje jugador : jugadores) {
+        for (Personaje jugador : personajes) {
             if (jugador.accion) {
                 continue;
             }
@@ -97,7 +98,7 @@ public class Area {
             }
         }
         for (int i = 0; i < jugRemove.size(); i++) {
-            jugadores.remove(jugRemove.get(i));
+            personajes.remove(jugRemove.get(i));
         }
         return textoEventos;
     }
@@ -111,7 +112,6 @@ public class Area {
     }
 
     public Area moverArea(Personaje personaje) {
-        Random alt = new Random();
         Area area = conexiones.get(alt.nextInt(0, conexiones.size()));
         area.añadirPersonaje(personaje);
         return area;
@@ -131,7 +131,6 @@ public class Area {
     private String evento(Personaje jugador, char horaDia) {
         String textoEventos = "";
 
-        Random alt = new Random();
         Evento ev = eventos.get(alt.nextInt(eventos.size()));
         
         int jug = ev.getNumeroPersonajes();
@@ -148,98 +147,75 @@ public class Area {
             }
         }
         
-        
-        
-        
         switch (jug) {
             case 1 -> {
                 textoEventos += ev.realizarEvento(jugador.nombre) + "\n";
                 jugador.setAccion(true);
                 if ((ev.tipoLetal != 'O') && jugador.vivo) {
-                    int indtemp = jugadores.indexOf(jugador);
-                    jugadores.get(indtemp).morir();
-                    jugRemove.add(jugador);
-                    muertos.add(jugador.nombre);
+                    int indtemp = personajes.indexOf(jugador);
+                    matar(indtemp, jugador);
                     presentes--;
                 }
             }
             case 2 -> {
-                Personaje p2 = jugadores.get(alt.nextInt(jugadores.size()));
+                Personaje p2 = personajes.get(alt.nextInt(personajes.size()));
                 while (p2.nombre.equals(jugador.nombre) || jugRemove.contains(p2)) {
-                    p2 = jugadores.get(alt.nextInt(0, jugadores.size()));
+                    p2 = personajes.get(alt.nextInt(0, personajes.size()));
                 }
                 textoEventos += ev.realizarEvento(jugador.nombre, p2.nombre) + "\n";
                 jugador.setAccion(true);
                 if (ev.tipoLetal != 'O') {
                     switch(ev.tipoLetal){
                         case 'N'->{
-                            int indtemp = jugadores.indexOf(jugador);
-                            jugadores.get(indtemp).morir();
-                            jugRemove.add(jugador);
-                            muertos.add(jugador.nombre);
+                            int indtemp = personajes.indexOf(jugador);
+                            matar(indtemp, jugador);
                             presentes--;
                             p2.matoA(jugador);
                         }
                         case 'T'->{
-                            int indtemp = jugadores.indexOf(jugador);
-                            int indtemp2 = jugadores.indexOf(p2);
-                            jugadores.get(indtemp).morir();
-                            jugadores.get(indtemp2).morir();
-                            jugRemove.add(jugador);
-                            jugRemove.add(p2);
-                            muertos.add(jugador.nombre);
-                            muertos.add(p2.nombre);
+                            int indtemp = personajes.indexOf(jugador);
+                            int indtemp2 = personajes.indexOf(p2);
+                            matar(indtemp, jugador);
+                            matar(indtemp2, p2);
                             presentes -= 2;
                         }
                     }
                 }
             }
             case 3 -> {
-                Personaje p2 = jugadores.get(alt.nextInt(jugadores.size()));
-                Personaje p3 = jugadores.get(alt.nextInt(jugadores.size()));
+                Personaje p2 = personajes.get(alt.nextInt(personajes.size()));
+                Personaje p3 = personajes.get(alt.nextInt(personajes.size()));
                 while (p2.nombre.equals(jugador.nombre) || jugRemove.contains(p2)) {
-                    p2 = jugadores.get(alt.nextInt(jugadores.size()));
+                    p2 = personajes.get(alt.nextInt(personajes.size()));
                 }
                 while (p3.nombre.equals(jugador.nombre) || jugRemove.contains(p3) || p3.nombre.equals(p2.nombre)) {
-                    p3 = jugadores.get(alt.nextInt(jugadores.size()));
+                    p3 = personajes.get(alt.nextInt(personajes.size()));
                 }
                 textoEventos += ev.realizarEvento(jugador.nombre, p2.nombre, p3.nombre) + "\n";
                 jugador.setAccion(true);
                 if (ev.tipoLetal != 'O') {
                     switch(ev.tipoLetal){
                         case 'N'->{
-                            int indtemp = jugadores.indexOf(jugador);
-                            jugadores.get(indtemp).morir();
-                            jugRemove.add(jugador);
-                            muertos.add(jugador.nombre);
+                            int indtemp = personajes.indexOf(jugador);
+                            matar(indtemp, jugador);
                             presentes--;
                             p2.matoA(jugador);
                             p3.matoA(jugador);
                         }
                         case 'T'->{
-                            int indtemp = jugadores.indexOf(jugador);
-                            int indtemp2 = jugadores.indexOf(p2);
-                            int indtemp3 = jugadores.indexOf(p3);
-                            jugadores.get(indtemp).morir();
-                            jugadores.get(indtemp2).morir();
-                            jugadores.get(indtemp3).morir();
-                            jugRemove.add(jugador);
-                            jugRemove.add(p2);
-                            jugRemove.add(p3);
-                            muertos.add(jugador.nombre);
-                            muertos.add(p2.nombre);
-                            muertos.add(p3.nombre);
+                            int indtemp = personajes.indexOf(jugador);
+                            int indtemp2 = personajes.indexOf(p2);
+                            int indtemp3 = personajes.indexOf(p3);
+                            matar(indtemp, jugador);
+                            matar(indtemp2, p2);
+                            matar(indtemp3, p3);
                             presentes -= 3;
                         }
                         case 'S'->{
-                            int indtemp2 = jugadores.indexOf(p2);
-                            int indtemp3 = jugadores.indexOf(p3);
-                            jugadores.get(indtemp2).morir();
-                            jugadores.get(indtemp3).morir();
-                            jugRemove.add(p2);
-                            jugRemove.add(p3);
-                            muertos.add(p2.nombre);
-                            muertos.add(p3.nombre);
+                            int indtemp2 = personajes.indexOf(p2);
+                            int indtemp3 = personajes.indexOf(p3);
+                            matar(indtemp2, p2);
+                            matar(indtemp3, p3);
                             presentes -= 2;
                             jugador.matoA(p2, p3);
                         }
@@ -247,64 +223,48 @@ public class Area {
                 }
             }
             case 4->{
-                Personaje p2 = jugadores.get(alt.nextInt(jugadores.size()));
-                Personaje p3 = jugadores.get(alt.nextInt(jugadores.size()));
-                Personaje p4 = jugadores.get(alt.nextInt(jugadores.size()));
+                Personaje p2 = personajes.get(alt.nextInt(personajes.size()));
+                Personaje p3 = personajes.get(alt.nextInt(personajes.size()));
+                Personaje p4 = personajes.get(alt.nextInt(personajes.size()));
                 while (p2.nombre.equals(jugador.nombre) || jugRemove.contains(p2)) {
-                    p2 = jugadores.get(alt.nextInt(jugadores.size()));
+                    p2 = personajes.get(alt.nextInt(personajes.size()));
                 }
                 while (p3.nombre.equals(jugador.nombre) || jugRemove.contains(p3) || p3.nombre.equals(p2.nombre)) {
-                    p3 = jugadores.get(alt.nextInt(jugadores.size()));
+                    p3 = personajes.get(alt.nextInt(personajes.size()));
                 }
                 while (p4.nombre.equals(jugador.nombre) || jugRemove.contains(p4) || p4.nombre.equals(p2.nombre) || p4.nombre.equals(p3.nombre)) {
-                    p4 = jugadores.get(alt.nextInt(jugadores.size()));
+                    p4 = personajes.get(alt.nextInt(personajes.size()));
                 }
                 textoEventos += ev.realizarEvento(jugador.nombre, p2.nombre, p3.nombre, p4.nombre) + "\n";
                 jugador.setAccion(true);
                 if (ev.tipoLetal != 'O') {
                     switch(ev.tipoLetal){
                         case 'N'->{
-                            int indtemp = jugadores.indexOf(jugador);
-                            jugadores.get(indtemp).morir();
-                            jugRemove.add(jugador);
-                            muertos.add(jugador.nombre);
+                            int indtemp = personajes.indexOf(jugador);
+                            matar(indtemp, jugador);
                             presentes--;
                             p2.matoA(jugador);
                             p3.matoA(jugador);
                             p4.matoA(jugador);
                         }
                         case 'T'->{
-                            int indtemp = jugadores.indexOf(jugador);
-                            int indtemp2 = jugadores.indexOf(p2);
-                            int indtemp3 = jugadores.indexOf(p3);
-                            int indtemp4 = jugadores.indexOf(p4);
-                            jugadores.get(indtemp).morir();
-                            jugadores.get(indtemp2).morir();
-                            jugadores.get(indtemp3).morir();
-                            jugadores.get(indtemp4).morir();
-                            jugRemove.add(jugador);
-                            jugRemove.add(p2);
-                            jugRemove.add(p3);
-                            jugRemove.add(p4);
-                            muertos.add(jugador.nombre);
-                            muertos.add(p2.nombre);
-                            muertos.add(p3.nombre);
-                            muertos.add(p4.nombre);
+                            int indtemp = personajes.indexOf(jugador);
+                            int indtemp2 = personajes.indexOf(p2);
+                            int indtemp3 = personajes.indexOf(p3);
+                            int indtemp4 = personajes.indexOf(p4);
+                            matar(indtemp, jugador);
+                            matar(indtemp2, p2);
+                            matar(indtemp3, p3);
+                            matar(indtemp4, p4);
                             presentes -= 4;
                         }
                         case 'S'->{
-                            int indtemp2 = jugadores.indexOf(p2);
-                            int indtemp3 = jugadores.indexOf(p3);
-                            int indtemp4 = jugadores.indexOf(p4);
-                            jugadores.get(indtemp2).morir();
-                            jugadores.get(indtemp3).morir();
-                            jugadores.get(indtemp4).morir();
-                            jugRemove.add(p2);
-                            jugRemove.add(p3);
-                            jugRemove.add(p4);
-                            muertos.add(p2.nombre);
-                            muertos.add(p3.nombre);
-                            muertos.add(p4.nombre);
+                            int indtemp2 = personajes.indexOf(p2);
+                            int indtemp3 = personajes.indexOf(p3);
+                            int indtemp4 = personajes.indexOf(p4);
+                            matar(indtemp2, p2);
+                            matar(indtemp3, p3);
+                            matar(indtemp4, p4);
                             presentes -= 3;
                             jugador.matoA(p2, p3, p4);
                         }
@@ -314,4 +274,11 @@ public class Area {
         }
         return textoEventos;
     }
+
+    private void matar(int indtemp, Personaje jugador) {
+        personajes.get(indtemp).morir();
+        jugRemove.add(jugador);
+        muertos.add(jugador.nombre);
+    }
+    
 }
