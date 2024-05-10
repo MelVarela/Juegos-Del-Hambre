@@ -217,13 +217,19 @@ public class Evento {
         String genero = p1.pronombres;
         String devolver = toReplace;
         
-        while(devolver.contains("p1(")){
+        while(devolver.contains("p1(")){//
             if(genero.equals("M")){
-                devolver = devolver.replace(devolver.substring(devolver.indexOf("p1("), devolver.indexOf(')') + 1), devolver.substring(devolver.indexOf('+') + 1, devolver.indexOf("@")));
+                String parentesis = devolver.substring(devolver.indexOf("p1("), devolver.indexOf("p1)") + 3);
+                String palabra = parentesis.substring(parentesis.indexOf('+') + 1, parentesis.indexOf("@"));
+                devolver = devolver.replace(parentesis, palabra);
             }else if(genero.equals("F")){
-                devolver = devolver.replace(devolver.substring(devolver.indexOf("p1("), devolver.indexOf(')') + 1), devolver.substring(devolver.indexOf('-') + 1, devolver.indexOf("#")));
+                String parentesis = devolver.substring(devolver.indexOf("p1("), devolver.indexOf("p1)") + 3);
+                String palabra = parentesis.substring(parentesis.indexOf('-') + 1, parentesis.indexOf("#"));
+                devolver = devolver.replace(parentesis, palabra);
             }else{
-                devolver = devolver.replace(devolver.substring(devolver.indexOf("p1("), devolver.indexOf(')') + 1), devolver.substring(devolver.indexOf('=') + 1, devolver.indexOf("$")));
+                String parentesis = devolver.substring(devolver.indexOf("p1("), devolver.indexOf("p1)") + 3);
+                String palabra = parentesis.substring(parentesis.indexOf('=') + 1, parentesis.indexOf("$"));
+                devolver = devolver.replace(parentesis, palabra);
             }
         }
         
@@ -240,11 +246,17 @@ public class Evento {
         
         while(devolver.contains("p2(")){
             if(genero.equals("M")){
-                devolver = devolver.replace(devolver.substring(devolver.indexOf("p2("), devolver.indexOf(')') + 1), devolver.substring(devolver.indexOf('+') + 1, devolver.indexOf("@")));
+                String parentesis = devolver.substring(devolver.indexOf("p2("), devolver.indexOf("p2)") + 3);
+                String palabra = parentesis.substring(parentesis.indexOf('+') + 1, parentesis.indexOf("@"));
+                devolver = devolver.replace(parentesis, palabra);
             }else if(genero.equals("F")){
-                devolver = devolver.replace(devolver.substring(devolver.indexOf("p2("), devolver.indexOf(')') + 1), devolver.substring(devolver.indexOf('-') + 1, devolver.indexOf("#")));
+                String parentesis = devolver.substring(devolver.indexOf("p2("), devolver.indexOf("p2)") + 3);
+                String palabra = parentesis.substring(parentesis.indexOf('-') + 1, parentesis.indexOf("#"));
+                devolver = devolver.replace(parentesis, palabra);
             }else{
-                devolver = devolver.replace(devolver.substring(devolver.indexOf("p2("), devolver.indexOf(')') + 1), devolver.substring(devolver.indexOf('=') + 1, devolver.indexOf("$")));
+                String parentesis = devolver.substring(devolver.indexOf("p2("), devolver.indexOf("p2)") + 3);
+                String palabra = parentesis.substring(parentesis.indexOf('=') + 1, parentesis.indexOf("$"));
+                devolver = devolver.replace(parentesis, palabra);
             }
         }
         
@@ -271,9 +283,13 @@ public class Evento {
         
         while(devolver.contains("a1(")){
             if(genero.equals("M")){
-                devolver = devolver.replace(devolver.substring(devolver.indexOf("a1("), devolver.indexOf(')') + 1), devolver.substring(devolver.indexOf('+') + 1, devolver.indexOf("@")));
+                String parentesis = devolver.substring(devolver.indexOf("a1("), devolver.indexOf("a1)") + 3);
+                String palabra = parentesis.substring(parentesis.indexOf('+') + 1, parentesis.indexOf("@"));
+                devolver = devolver.replace(parentesis, palabra);
             }else{
-                devolver = devolver.replace(devolver.substring(devolver.indexOf("a1("), devolver.indexOf(')') + 1), devolver.substring(devolver.indexOf('-') + 1, devolver.indexOf("#")));
+                String parentesis = devolver.substring(devolver.indexOf("a1("), devolver.indexOf("a1)") + 3);
+                String palabra = parentesis.substring(parentesis.indexOf('-') + 1, parentesis.indexOf("#"));
+                devolver = devolver.replace(parentesis, palabra);
             }
         }
         
@@ -300,9 +316,13 @@ public class Evento {
         
         while(devolver.contains("o1(")){
             if(genero.equals("M")){
-                devolver = devolver.replace(devolver.substring(devolver.indexOf("o1("), devolver.indexOf(')') + 1), devolver.substring(devolver.indexOf('+') + 1, devolver.indexOf("@")));
+                String parentesis = devolver.substring(devolver.indexOf("o1("), devolver.indexOf("o1)") + 3);
+                String palabra = parentesis.substring(parentesis.indexOf('+') + 1, parentesis.indexOf("@"));
+                devolver = devolver.replace(parentesis, palabra);
             }else{
-                devolver = devolver.replace(devolver.substring(devolver.indexOf("o1("), devolver.indexOf(')') + 1), devolver.substring(devolver.indexOf('-') + 1, devolver.indexOf("#")));
+                String parentesis = devolver.substring(devolver.indexOf("o1("), devolver.indexOf("o1)") + 3);
+                String palabra = parentesis.substring(parentesis.indexOf('-') + 1, parentesis.indexOf("#"));
+                devolver = devolver.replace(parentesis, palabra);
             }
         }
         
@@ -329,11 +349,17 @@ public class Evento {
         
         while(devolver.contains("p3(")){
             if(genero.equals("M")){
-                devolver = devolver.replace(devolver.substring(devolver.indexOf("p3("), devolver.indexOf(')') + 1), devolver.substring(devolver.indexOf('+') + 1, devolver.indexOf("@")));
+                String parentesis = devolver.substring(devolver.indexOf("p3("), devolver.indexOf("p3)") + 3);
+                String palabra = parentesis.substring(parentesis.indexOf('+') + 1, parentesis.indexOf("@"));
+                devolver = devolver.replace(parentesis, palabra);
             }else if(genero.equals("F")){
-                devolver = devolver.replace(devolver.substring(devolver.indexOf("p3("), devolver.indexOf(')') + 1), devolver.substring(devolver.indexOf('-') + 1, devolver.indexOf("#")));
+                String parentesis = devolver.substring(devolver.indexOf("p3("), devolver.indexOf("p3)") + 3);
+                String palabra = parentesis.substring(parentesis.indexOf('-') + 1, parentesis.indexOf("#"));
+                devolver = devolver.replace(parentesis, palabra);
             }else{
-                devolver = devolver.replace(devolver.substring(devolver.indexOf("p3("), devolver.indexOf(')') + 1), devolver.substring(devolver.indexOf('=') + 1, devolver.indexOf("$")));
+                String parentesis = devolver.substring(devolver.indexOf("p3("), devolver.indexOf("p3)") + 3);
+                String palabra = parentesis.substring(parentesis.indexOf('=') + 1, parentesis.indexOf("$"));
+                devolver = devolver.replace(parentesis, palabra);
             }
         }
         
@@ -360,11 +386,17 @@ public class Evento {
         
         while(devolver.contains("p4(")){
             if(genero.equals("M")){
-                devolver = devolver.replace(devolver.substring(devolver.indexOf("p4("), devolver.indexOf(')') + 1), devolver.substring(devolver.indexOf('+') + 1, devolver.indexOf("@")));
+                String parentesis = devolver.substring(devolver.indexOf("p4("), devolver.indexOf("p4)") + 3);
+                String palabra = parentesis.substring(parentesis.indexOf('+') + 1, parentesis.indexOf("@"));
+                devolver = devolver.replace(parentesis, palabra);
             }else if(genero.equals("F")){
-                devolver = devolver.replace(devolver.substring(devolver.indexOf("p4("), devolver.indexOf(')') + 1), devolver.substring(devolver.indexOf('-') + 1, devolver.indexOf("#")));
+                String parentesis = devolver.substring(devolver.indexOf("p4("), devolver.indexOf("p4)") + 3);
+                String palabra = parentesis.substring(parentesis.indexOf('-') + 1, parentesis.indexOf("#"));
+                devolver = devolver.replace(parentesis, palabra);
             }else{
-                devolver = devolver.replace(devolver.substring(devolver.indexOf("p4("), devolver.indexOf(')') + 1), devolver.substring(devolver.indexOf('=') + 1, devolver.indexOf("$")));
+                String parentesis = devolver.substring(devolver.indexOf("p4("), devolver.indexOf("p4)") + 3);
+                String palabra = parentesis.substring(parentesis.indexOf('=') + 1, parentesis.indexOf("$"));
+                devolver = devolver.replace(parentesis, palabra);
             }
         }
         
