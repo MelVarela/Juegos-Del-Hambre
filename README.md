@@ -16,6 +16,11 @@
 #### V. 0.6.1
 - Mejorado el funcionamiento interno del código.
 
+#### V. 0.6.2
+- Arreglado un error relacionado con el listado de victimas, el cual se rompia al hacer click en un fallecido sin victimas.
+- Arreglado un error que permitia a los jugadores muertos realizar acciones.
+- Mejorado el funcionamiento interno del código.
+
 ### V. 0.5
 - Nuevas características:  
 	- Añadido texto provisional en caso de que exista un empate al final de la simulación.

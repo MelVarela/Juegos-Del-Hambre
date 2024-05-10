@@ -312,7 +312,11 @@ public class frameJuego extends javax.swing.JFrame {
     private void listaFallecidosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listaFallecidosMouseClicked
         Personaje pDisplay = getPersonaje(listaFallecidos.getSelectedValue());
         labelKillCount.setText(pDisplay.getKillCount());
-        displayVictimas.setText(pDisplay.victimas.substring(4, pDisplay.victimas.length()));
+        if(pDisplay.victimas == null){
+            displayVictimas.setText("");
+        }else{
+            displayVictimas.setText(pDisplay.victimas.substring(4, pDisplay.victimas.length()));
+        }
     }//GEN-LAST:event_listaFallecidosMouseClicked
 
     private void jugadoresAreaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jugadoresAreaMouseClicked

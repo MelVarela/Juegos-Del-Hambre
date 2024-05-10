@@ -12,6 +12,7 @@ public class Area {
     public ArrayList<Evento> eventos = new ArrayList<>();
     public ArrayList<String> muertos = new ArrayList<>();
     public int presentes = 0;
+    public String genero;
 
     private ArrayList<Personaje> jugRemove = new ArrayList<>();
     
@@ -19,6 +20,11 @@ public class Area {
     
     Area(String nombre) {
         this.nombre = nombre;
+    }
+    
+    Area(String nombre, String genero){
+        this.nombre = nombre;
+        this.genero = genero;
     }
 
     public void añadirConexion(Area conexion) {
@@ -29,7 +35,7 @@ public class Area {
         String devolver = "";
 
         for (Area conexion : conexiones) {
-            devolver += " " + conexion.nombre + ",";
+            devolver += conexion.nombre + ", ";
         }
 
         return devolver;
@@ -43,16 +49,6 @@ public class Area {
     public void eliminarPersonaje(Personaje personaje) {
         personajes.remove(personaje);
         presentes--;
-    }
-
-    public String getStringJugadores() {
-        String devolver = "";
-
-        for (Personaje personaje : personajes) {
-            devolver += personaje + ",";
-        }
-
-        return devolver;
     }
 
     public DefaultListModel devolverModeloJugadores() {

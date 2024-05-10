@@ -33,6 +33,7 @@ public class Personaje {
     
     public void morir(){
         vivo = false;
+        accion = false;
     }
     
     public void setAccion(boolean valor){
