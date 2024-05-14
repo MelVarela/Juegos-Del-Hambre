@@ -13,14 +13,19 @@ public class Evento {
         x -> numero
         g -> genero (S preguntar / N ignorar)
             Los simbolos '+, -, =' y '@, #, $' ayudan al codigo a saber que palabra corresponde a cada genero.
-        (/) palabra a escoger
+        (/) significa una palabra a escoger. Usará -1 antes de los parentesis para indicar donde debe de buscar.
     */
+    public String muerte;
+    //Se refiere a si el evento hace referencia al area en la que esta o a otra
+    public boolean esta;
     
     Evento(char horario, int numeroPersonajes, char letalidad, String evento){
         hora = horario;
         numJugadores = numeroPersonajes;
         tipoLetal = letalidad;
         this.evento = evento;
+        numAreas = 0;
+        numObjetos = 0;
     }
     
     Evento(char horario, int numeroPersonajes, int numeroAreas, int numeroObjetos, char letalidad, String evento){
@@ -32,17 +37,46 @@ public class Evento {
         this.evento = evento;
     }
     
+    Evento(char horario, int numeroPersonajes, int numeroAreas, boolean esta, char letalidad, String evento){
+        hora = horario;
+        numJugadores = numeroPersonajes;
+        numAreas = numeroAreas;
+        this.esta = esta;
+        tipoLetal = letalidad;
+        this.evento = evento;
+    }
+    
+    Evento(char horario, int numeroPersonajes, char letalidad, String evento, String causaMuerte){
+        hora = horario;
+        numJugadores = numeroPersonajes;
+        tipoLetal = letalidad;
+        this.evento = evento;
+        numAreas = 0;
+        numObjetos = 0;
+        muerte = causaMuerte;
+    }
+    
+    Evento(char horario, int numeroPersonajes, int numeroAreas, int numeroObjetos, char letalidad, String evento, String causaMuerte){
+        hora = horario;
+        numJugadores = numeroPersonajes;
+        numAreas = numeroAreas;
+        numObjetos = numeroObjetos;
+        tipoLetal = letalidad;
+        this.evento = evento;
+        muerte = causaMuerte;
+    }
+    
     public String realizarEvento(Personaje p1){
         String devolver = evento;
         
         if(devolver.contains("&p1n")){
-            return replaceJugadorUnoNP(p1.nombre, devolver);
+            devolver = replaceJugadorUnoNP(p1.nombre, devolver);
         }
         if(devolver.contains("&p1s")){
-            return replaceJugadorUnoP(p1, devolver);
+            devolver = replaceJugadorUnoP(p1, devolver);
         }
         
-        return "error linea 32 de Evento.java";
+        return devolver;
     }
     
     public String realizarEvento(Personaje p1, Personaje p2){
@@ -60,6 +94,135 @@ public class Evento {
         }
         if(devolver.contains("&p2s")){
             devolver = replaceJugadorDosP(p2, devolver);
+        }
+        
+        return devolver;
+    }
+    
+    public String realizarEvento(Personaje p1, Personaje p2, Area a1){
+        String devolver = evento;
+        
+        if(devolver.contains("&p1n")){
+            devolver = replaceJugadorUnoNP(p1.nombre, devolver);
+        }
+        if(devolver.contains("&p1s")){
+            devolver = replaceJugadorUnoP(p1, devolver);
+        }
+        
+        if(devolver.contains("&p2n")){
+            devolver = replaceJugadorDosNP(p2.nombre, devolver);
+        }
+        if(devolver.contains("&p2s")){
+            devolver = replaceJugadorDosP(p2, devolver);
+        }
+        
+        if(devolver.contains("&a1n")){
+            devolver = replaceAreaUnoNP(a1.nombre, devolver);
+        }
+        if(devolver.contains("&a1s")){
+            devolver = replaceAreaUnoP(a1, devolver);
+        }
+        
+        return devolver;
+    }
+    
+    public String realizarEvento(Personaje p1, Personaje p2, Personaje p3, Area a1){
+        String devolver = evento;
+        
+        if(devolver.contains("&p1n")){
+            devolver = replaceJugadorUnoNP(p1.nombre, devolver);
+        }
+        if(devolver.contains("&p1s")){
+            devolver = replaceJugadorUnoP(p1, devolver);
+        }
+        
+        if(devolver.contains("&p2n")){
+            devolver = replaceJugadorDosNP(p2.nombre, devolver);
+        }
+        if(devolver.contains("&p2s")){
+            devolver = replaceJugadorDosP(p2, devolver);
+        }
+        
+        if(devolver.contains("&p3n")){
+            devolver = replaceJugadorTresNP(p3.nombre, devolver);
+        }
+        if(devolver.contains("&p3s")){
+            devolver = replaceJugadorTresP(p3, devolver);
+        }
+        
+        if(devolver.contains("&a1n")){
+            devolver = replaceAreaUnoNP(a1.nombre, devolver);
+        }
+        if(devolver.contains("&a1s")){
+            devolver = replaceAreaUnoP(a1, devolver);
+        }
+        
+        return devolver;
+    }
+    
+    public String realizarEvento(Personaje p1, Personaje p2, Personaje p3, Personaje p4, Area a1){
+        String devolver = evento;
+        
+        if(devolver.contains("&p1n")){
+            devolver = replaceJugadorUnoNP(p1.nombre, devolver);
+        }
+        if(devolver.contains("&p1s")){
+            devolver = replaceJugadorUnoP(p1, devolver);
+        }
+        
+        if(devolver.contains("&p2n")){
+            devolver = replaceJugadorDosNP(p2.nombre, devolver);
+        }
+        if(devolver.contains("&p2s")){
+            devolver = replaceJugadorDosP(p2, devolver);
+        }
+        
+        if(devolver.contains("&p3n")){
+            devolver = replaceJugadorTresNP(p3.nombre, devolver);
+        }
+        if(devolver.contains("&p3s")){
+            devolver = replaceJugadorTresP(p3, devolver);
+        }
+        
+        if(devolver.contains("&p4n")){
+            devolver = replaceJugadorCuatroNP(p4.nombre, devolver);
+        }
+        if(devolver.contains("&p4s")){
+            devolver = replaceJugadorCuatroP(p4, devolver);
+        }
+        
+        if(devolver.contains("&a1n")){
+            devolver = replaceAreaUnoNP(a1.nombre, devolver);
+        }
+        if(devolver.contains("&a1s")){
+            devolver = replaceAreaUnoP(a1, devolver);
+        }
+        
+        return devolver;
+    }
+    
+    public String realizarEvento(Personaje p1, Personaje p2, Personaje p3){
+        String devolver = evento;
+        
+        if(devolver.contains("&p1n")){
+            devolver = replaceJugadorUnoNP(p1.nombre, devolver);
+        }
+        if(devolver.contains("&p1s")){
+            devolver = replaceJugadorUnoP(p1, devolver);
+        }
+        
+        if(devolver.contains("&p2n")){
+            devolver = replaceJugadorDosNP(p2.nombre, devolver);
+        }
+        if(devolver.contains("&p2s")){
+            devolver = replaceJugadorDosP(p2, devolver);
+        }
+        
+        if(devolver.contains("&p3n")){
+            devolver = replaceJugadorTresNP(p3.nombre, devolver);
+        }
+        if(devolver.contains("&p3s")){
+            devolver = replaceJugadorTresP(p3, devolver);
         }
         
         return devolver;
@@ -171,22 +334,6 @@ public class Evento {
         }
         
         return devolver;
-    }
-    
-    public String realizarEvento(Object args){
-        return String.format(evento, args);
-    }
-    
-    public String realizarEvento(Object args, Object args2){
-        return String.format(evento, args, args2);
-    }
-    
-    public String realizarEvento(Object args, Object args2, Object args3){
-        return String.format(evento, args, args2, args3);
-    }
-    
-    public String realizarEvento(Object args, Object args2, Object args3, Object args4){
-        return String.format(evento, args, args2, args3, args4);
     }
     
     public int getNumeroPersonajes(){

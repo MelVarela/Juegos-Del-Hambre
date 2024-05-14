@@ -30,7 +30,6 @@ public class mainFrame extends javax.swing.JFrame {
         checkStats = new javax.swing.JCheckBox();
         fieldNombre = new javax.swing.JTextField();
         fieldEquipo = new javax.swing.JTextField();
-        fieldPronombres = new javax.swing.JTextField();
         labelMovimiento = new javax.swing.JLabel();
         labelVida = new javax.swing.JLabel();
         labelCarisma = new javax.swing.JLabel();
@@ -62,6 +61,12 @@ public class mainFrame extends javax.swing.JFrame {
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
+        fieldPronombres = new javax.swing.JComboBox<>();
+        jLabel18 = new javax.swing.JLabel();
+        jLabel19 = new javax.swing.JLabel();
+        nTest = new javax.swing.JTextField();
+        bTest = new javax.swing.JButton();
+        jLabel15 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("HungerGames");
@@ -99,8 +104,6 @@ public class mainFrame extends javax.swing.JFrame {
         fieldNombre.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
         fieldEquipo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-
-        fieldPronombres.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
         labelMovimiento.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         labelMovimiento.setText("Movimiento:");
@@ -224,6 +227,25 @@ public class mainFrame extends javax.swing.JFrame {
         jLabel17.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel17.setText("-Equipos funcionales");
 
+        fieldPronombres.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Masculino", "Femenino", "Neutro" }));
+
+        jLabel18.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel18.setText("-Objetos");
+
+        jLabel19.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel19.setText("-Recapitulación final");
+
+        nTest.setText("NT");
+
+        bTest.setText("AddT");
+        bTest.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                bTestMouseClicked(evt);
+            }
+        });
+
+        jLabel15.setText("Test area:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -234,12 +256,6 @@ public class mainFrame extends javax.swing.JFrame {
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(checkStats))
-                                .addGap(18, 18, 18)
-                                .addComponent(fieldPronombres, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(labelVida, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
@@ -255,6 +271,12 @@ public class mainFrame extends javax.swing.JFrame {
                             .addComponent(labelWarning1)
                             .addComponent(botonAnhadir, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(checkStats))
+                                    .addGap(18, 18, 18)
+                                    .addComponent(fieldPronombres, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(layout.createSequentialGroup()
                                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGap(18, 18, 18)
@@ -299,8 +321,23 @@ public class mainFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel14)
                     .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel17))
+                    .addComponent(jLabel17)
+                    .addComponent(jLabel18)
+                    .addComponent(jLabel19))
                 .addGap(170, 170, 170))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addContainerGap()
+                            .addComponent(nTest, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addGap(67, 67, 67)
+                            .addComponent(bTest)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(58, 58, 58)
+                        .addComponent(jLabel15)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -309,9 +346,9 @@ public class mainFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel1)
                     .addComponent(jLabel13))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(27, 27, 27)
                 .addComponent(jLabel14)
-                .addGap(21, 21, 21)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel4)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -332,7 +369,7 @@ public class mainFrame extends javax.swing.JFrame {
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(fieldPronombres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(fieldPronombres, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                     .addComponent(checkStats)
                                     .addGap(18, 18, 18)
@@ -378,10 +415,21 @@ public class mainFrame extends javax.swing.JFrame {
                             .addComponent(jLabel12)
                             .addComponent(displayCarisma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(39, 39, 39)
-                        .addComponent(botonBorrar)))
+                        .addComponent(botonBorrar))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel19)))
                 .addGap(43, 43, 43)
                 .addComponent(botonEmpezar, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(510, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 339, Short.MAX_VALUE)
+                .addComponent(jLabel15)
+                .addGap(28, 28, 28)
+                .addComponent(nTest, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(bTest)
+                .addGap(75, 75, 75))
         );
 
         pack();
@@ -513,6 +561,21 @@ public class mainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_botonBorrarMouseClicked
 
+    private void bTestMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bTestMouseClicked
+        Equipo t = new Equipo("T");
+        equipos.add(t);
+        DefaultListModel empty = new DefaultListModel();
+        nombres.add(empty);
+        añadirEquipo("T");
+        for (int i = 1; i <= Integer.parseInt(nTest.getText()); i++) {
+            String nombre = "T" + i;
+            Personaje nuevo = new Personaje(nombre, valorPronombres());
+            jugadores.add(nuevo);
+            equipos.get(equipos.indexOf(t)).añadirMiembro(nuevo);
+            nombres.get(getIndex("T")).addElement(nombre);
+        }
+    }//GEN-LAST:event_bTestMouseClicked
+
     private void clearLabelStats() {
         displayNombre.setText("");
         displayEquipo.setText("");
@@ -540,7 +603,7 @@ public class mainFrame extends javax.swing.JFrame {
         } else if ("".equals(fieldEquipo.getText())) {
             JOptionPane.showMessageDialog(rootPane, "Falta equipo.");
             return false;
-        } else if ("".equals(fieldPronombres.getText())) {
+        } else if ("".equals(valorPronombres())) {
             JOptionPane.showMessageDialog(rootPane, "Faltan pronombres.");
             return false;
         } else {
@@ -638,7 +701,7 @@ public class mainFrame extends javax.swing.JFrame {
     private void crearPersonajeStats() {
         Personaje nuevo = new Personaje(
                 fieldNombre.getText(),
-                fieldPronombres.getText(),
+                valorPronombres(),
                 pasarInt(fieldVida.getText()),
                 pasarInt(fieldMovimiento.getText()),
                 pasarInt(fieldCarisma.getText())
@@ -654,13 +717,25 @@ public class mainFrame extends javax.swing.JFrame {
     }
 
     private void crearPersonaje() {
-        Personaje nuevo = new Personaje(fieldNombre.getText(), fieldPronombres.getText());
+        Personaje nuevo = new Personaje(fieldNombre.getText(), valorPronombres());
         jugadores.add(nuevo);
         for (Equipo equipo : equipos) {
             if (equipo.nombre.equals(fieldEquipo.getText())) {
                 equipos.get(equipos.indexOf(equipo)).añadirMiembro(nuevo);
                 nombres.get(getIndex(fieldEquipo.getText())).addElement(fieldNombre.getText());
             }
+        }
+    }
+    
+    private String valorPronombres(){
+        if(fieldPronombres.getSelectedItem() == "Masculino"){
+            return "M";
+        }else if(fieldPronombres.getSelectedItem() == "Femenino"){
+            return "F";
+        }else if(fieldPronombres.getSelectedItem() == "Neutro"){
+            return "N";
+        }else{
+            return "";
         }
     }
 
@@ -697,6 +772,7 @@ public class mainFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton bTest;
     private javax.swing.JButton botonAnhadir;
     private javax.swing.JButton botonBorrar;
     private javax.swing.JButton botonEmpezar;
@@ -711,7 +787,7 @@ public class mainFrame extends javax.swing.JFrame {
     private javax.swing.JTextField fieldEquipo;
     private javax.swing.JTextField fieldMovimiento;
     private javax.swing.JTextField fieldNombre;
-    private javax.swing.JTextField fieldPronombres;
+    private javax.swing.JComboBox<String> fieldPronombres;
     private javax.swing.JTextField fieldVida;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -719,7 +795,10 @@ public class mainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -736,5 +815,6 @@ public class mainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel labelWarning1;
     private javax.swing.JList<String> listaEquipos;
     private javax.swing.JList<String> listaMiembros;
+    private javax.swing.JTextField nTest;
     // End of variables declaration//GEN-END:variables
 }

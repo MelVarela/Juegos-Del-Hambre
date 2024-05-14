@@ -1,8 +1,12 @@
 package principal;
+
+import java.util.ArrayList;
+
 public class Personaje {
-    String nombre, pronombres, victimas;
+    String nombre, pronombres, victimas, causaMuerte;
     int vida, movimiento, carisma, killCount, ganasMover;
     boolean vivo, accion;
+    ArrayList<Objeto> equipamiento = new ArrayList<>();
     
     Personaje(String nombre, String pronombres){
         this.nombre = nombre;
@@ -20,6 +24,7 @@ public class Personaje {
         vivo = true;
         killCount = 0;
         victimas = "";
+        causaMuerte = "";
         ganasMover = 0;
     }
     
@@ -59,5 +64,14 @@ public class Personaje {
         String devolver = "";
         devolver += killCount;
         return devolver;
+    }
+    
+    public void setCausaMuerte(String causa){
+        causaMuerte = causa;
+    }
+    
+    @Override
+    public String toString(){
+        return String.format("%s, Acc: %b, Vivo: %b", nombre, accion, vivo);
     }
 }

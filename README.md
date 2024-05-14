@@ -2,6 +2,18 @@
 
 ## Un simulador por Guantes
 
+### V. 0.7
+- Nuevas características:  
+	- Ahora los pronombres de los personajes se reflejan en el texto generado.
+	- El campo "causa de la muerte" es finalmente funcional.
+	- Añadidos 8 nuevos eventos.
+- Errores arreglados:  
+	- Arreglados errores ortográficos.
+	- Ahora los personajes ya no pueden actuar varias veces si aparecian con anterioridad en un evento conjunto.
+	- Arreglado un error que creaba personajes inmortales.
+- Mejoras de calidad de vida:  
+	- El texto final ahora aparece directamente al inicio de la caja de texto, y no con un espacio de más como ocurria antes.  
+
 ### V. 0.6
 - Nuevas características:  
 	- Añadidos 50 nuevos eventos.  
