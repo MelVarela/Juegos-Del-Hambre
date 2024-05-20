@@ -15,6 +15,7 @@ public class Area {
     public int disponibles = 0;
     public String genero;
 
+    private GestorObjetos gestor = new GestorObjetos();
     private ArrayList<Personaje> jugRemove = new ArrayList<>();
     
     private Random alt = new Random();
@@ -80,14 +81,17 @@ public class Area {
                 jugador.accion = true;
             }
             if (jugador.accion) {
-                System.out.println("Se ha saltado la accion de "+ jugador +" ya que ya habia actuado.");
+//                System.out.println("Se ha saltado la accion de "+ jugador +" ya que ya habia actuado.");
                 continue;
             }
             int i = alt.nextInt(0, 100);
             if (i > 15 + jugador.ganasMover || (horaDia == 'P')) {
                 textoEventos += evento(jugador, horaDia);
                 jugador.ganasMover += 5;
-            } else {
+            }else if((i < 30) && !(jugador.equipamiento.isEmpty())){
+                textoEventosObjeto(jugador, horaDia);
+                jugador.ganasMover += 5;
+            }else {
                 jugador.ganasMover = 0;
                 Area ar = moverArea(jugador);
                 String moverse = "\n&p1n se ha movido a1(+al@-a la#a1) &a1s\n";
@@ -132,6 +136,8 @@ public class Area {
          */
     private String evento(Personaje jugador, char horaDia) {
         String textoEventos = "";
+        
+        ArrayList<Objeto> usados = new ArrayList<>();
 
         Evento ev = eventos.get(alt.nextInt(eventos.size()));
 //        System.out.println("Vamos a realizar el turno de: "+ jugador);
@@ -165,7 +171,10 @@ public class Area {
         
         switch (jug) {
             case 1 -> {
-                textoEventos += textoEvento(jugador, this, ev);
+                if(ev.numObjetos != 0){
+                    usados = gestionarObjetos(jug, ev.numObjetos, jugador, ev);
+                }
+                textoEventos += textoEvento(jugador, this, ev, usados);
                 jugador.setAccion(true);
                 disponibles--;
                 if ((ev.tipoLetal != 'O') && jugador.vivo) {
@@ -176,6 +185,9 @@ public class Area {
 //                System.out.println("Ha terminado de jugar "+ jugador + " y solo ha participado el. Disponibles es ahora: " + disponibles);
             }
             case 2 -> {
+                if(ev.numObjetos != 0){
+                    usados = gestionarObjetos(jug, ev.numObjetos, jugador, ev);
+                }
                 Personaje p2 = personajes.get(alt.nextInt(personajes.size()));
                 while (p2.nombre.equals(jugador.nombre) || jugRemove.contains(p2) || p2.accion) {
                     p2 = personajes.get(alt.nextInt(0, personajes.size()));
@@ -187,7 +199,7 @@ public class Area {
 //                    System.out.println("Comparando con: "+ jugador);
 //                    System.out.println(jugadoresDisponibles(jugador));
                 }
-                textoEventos += ev.realizarEvento(jugador, p2) + "\n";
+                textoEventos += textoEvento(jugador, p2, this, ev, usados);
                 jugador.setAccion(true);
                 personajes.get(personajes.indexOf(p2)).setAccion(true);
                 disponibles -= 2;
@@ -208,32 +220,35 @@ public class Area {
                         }
                     }
                 }
-                System.out.println("Ha terminado de jugar "+ jugador + " y han participado dos personas. Disponibles es ahora: " + disponibles);
+//                System.out.println("Ha terminado de jugar "+ jugador + " y han participado dos personas. Disponibles es ahora: " + disponibles);
             }
             case 3 -> {
+                if(ev.numObjetos != 0){
+                    usados = gestionarObjetos(jug, ev.numObjetos, jugador,ev);
+                }
                 Personaje p2 = personajes.get(alt.nextInt(personajes.size()));
                 Personaje p3 = personajes.get(alt.nextInt(personajes.size()));
                 while (p2.nombre.equals(jugador.nombre) || jugRemove.contains(p2) || p2.accion) {
                     p2 = personajes.get(alt.nextInt(personajes.size()));
-                    System.out.println("b4");
-                    System.out.println("Disponibles: "+disponibles);
-                    System.out.println("Num jug ev: "+ev.numJugadores);
-                    System.out.println("p2: "+p2);
-                    System.out.println(jugRemove.indexOf(p2));
-                    System.out.println(jugador);
-                    System.out.println(jugadoresDisponibles(jugador));
+//                    System.out.println("b4");
+//                    System.out.println("Disponibles: "+disponibles);
+//                    System.out.println("Num jug ev: "+ev.numJugadores);
+//                    System.out.println("p2: "+p2);
+//                    System.out.println(jugRemove.indexOf(p2));
+//                    System.out.println(jugador);
+//                    System.out.println(jugadoresDisponibles(jugador));
                 }
                 while (p3.nombre.equals(jugador.nombre) || jugRemove.contains(p3) || p3.nombre.equals(p2.nombre) || p3.accion) {
                     p3 = personajes.get(alt.nextInt(personajes.size()));
-                    System.out.println("b5");
-                    System.out.println("Disponibles: "+disponibles);
-                    System.out.println("Num jug ev: "+ev.numJugadores);
-                    System.out.println("p2: "+p2);
-                    System.out.println(jugRemove.indexOf(p2));
-                    System.out.println(jugador);
-                    System.out.println(jugadoresDisponibles(jugador));
+//                    System.out.println("b5");
+//                    System.out.println("Disponibles: "+disponibles);
+//                    System.out.println("Num jug ev: "+ev.numJugadores);
+//                    System.out.println("p2: "+p2);
+//                    System.out.println(jugRemove.indexOf(p2));
+//                    System.out.println(jugador);
+//                    System.out.println(jugadoresDisponibles(jugador));
                 }
-                textoEventos += ev.realizarEvento(jugador, p2, p3) + "\n";
+                textoEventos += textoEvento(jugador, p2, p3, this, ev, usados);
                 jugador.setAccion(true);
                 personajes.get(personajes.indexOf(p2)).setAccion(true);
                 personajes.get(personajes.indexOf(p3)).setAccion(true);
@@ -266,46 +281,49 @@ public class Area {
                         }
                     }
                 }
-                System.out.println("Ha terminado de jugar "+ jugador + " y han participado tres personas. Disponibles es ahora: " + disponibles);
+//                System.out.println("Ha terminado de jugar "+ jugador + " y han participado tres personas. Disponibles es ahora: " + disponibles);
             }
             case 4->{
+                if(ev.numObjetos != 0){
+                    usados = gestionarObjetos(jug, ev.numObjetos, jugador, ev);
+                }
                 Personaje p2 = personajes.get(alt.nextInt(personajes.size()));
                 Personaje p3 = personajes.get(alt.nextInt(personajes.size()));
                 Personaje p4 = personajes.get(alt.nextInt(personajes.size()));
                 while (p2.nombre.equals(jugador.nombre) || jugRemove.contains(p2) || p2.accion) {
                     p2 = personajes.get(alt.nextInt(personajes.size()));
-                    System.out.println("b6");
-                    System.out.println("Disponibles: "+disponibles);
-                    System.out.println("Num jug ev: "+ev.numJugadores);
-                    System.out.println("p2: "+p2);
-                    System.out.println(jugRemove.indexOf(p2));
-                    System.out.println(jugador);
-                    System.out.println(jugadoresDisponibles(jugador));
+//                    System.out.println("b6");
+//                    System.out.println("Disponibles: "+disponibles);
+//                    System.out.println("Num jug ev: "+ev.numJugadores);
+//                    System.out.println("p2: "+p2);
+//                    System.out.println(jugRemove.indexOf(p2));
+//                    System.out.println(jugador);
+//                    System.out.println(jugadoresDisponibles(jugador));
                 }
                 while (p3.nombre.equals(jugador.nombre) || jugRemove.contains(p3) || p3.nombre.equals(p2.nombre) || p3.accion) {
                     p3 = personajes.get(alt.nextInt(personajes.size()));
-                    System.out.println("b7");
-                    System.out.println("Disponibles: "+disponibles);
-                    System.out.println("Num jug ev: "+ev.numJugadores);
-                    System.out.println("p2: "+p2);
-                    System.out.println("p3: "+p3);
-                    System.out.println(jugRemove.indexOf(p2));
-                    System.out.println(jugador);
-                    System.out.println(jugadoresDisponibles(jugador));
+//                    System.out.println("b7");
+//                    System.out.println("Disponibles: "+disponibles);
+//                    System.out.println("Num jug ev: "+ev.numJugadores);
+//                    System.out.println("p2: "+p2);
+//                    System.out.println("p3: "+p3);
+//                    System.out.println(jugRemove.indexOf(p2));
+//                    System.out.println(jugador);
+//                    System.out.println(jugadoresDisponibles(jugador));
                 }
                 while (p4.nombre.equals(jugador.nombre) || jugRemove.contains(p4) || p4.nombre.equals(p2.nombre) || p4.nombre.equals(p3.nombre) || p4.accion) {
                     p4 = personajes.get(alt.nextInt(personajes.size()));
-                    System.out.println("b8");
-                    System.out.println("Disponibles: "+disponibles);
-                    System.out.println("Num jug ev: "+ev.numJugadores);
-                    System.out.println("p2: "+p2);
-                    System.out.println("p3: "+p3);
-                    System.out.println("p4: "+p4);
-                    System.out.println(jugRemove.indexOf(p2));
-                    System.out.println(jugador);
-                    System.out.println(jugadoresDisponibles(jugador));
+//                    System.out.println("b8");
+//                    System.out.println("Disponibles: "+disponibles);
+//                    System.out.println("Num jug ev: "+ev.numJugadores);
+//                    System.out.println("p2: "+p2);
+//                    System.out.println("p3: "+p3);
+//                    System.out.println("p4: "+p4);
+//                    System.out.println(jugRemove.indexOf(p2));
+//                    System.out.println(jugador);
+//                    System.out.println(jugadoresDisponibles(jugador));
                 }
-                textoEventos += ev.realizarEvento(jugador, p2, p3, p4) + "\n";
+                textoEventos += textoEvento(jugador, p2, p3, p4, this, ev, usados);
                 jugador.setAccion(true);
                 personajes.get(personajes.indexOf(p2)).setAccion(true);
                 personajes.get(personajes.indexOf(p3)).setAccion(true);
@@ -348,6 +366,10 @@ public class Area {
             }
         }
         return textoEventos;
+    }
+    
+    private String textoEventosObjeto(Personaje jugador, char horaDia){
+        String textoEventos = "";
     }
 
     private void matar(int indtemp, Personaje jugador, Evento evento) {
@@ -419,7 +441,7 @@ public class Area {
         return devolver;
     }
     
-    private String textoEvento(Personaje jugador, Area area, Evento ev){
+    private String textoEvento(Personaje jugador, Area area, Evento ev, ArrayList<Objeto> objetos){
         if(ev.numAreas == 0 && ev.numObjetos == 0){
             return ev.realizarEvento(jugador) + "\n";
         }else if(ev.numAreas == 1 && ev.numObjetos == 0){
@@ -429,12 +451,18 @@ public class Area {
                 return ev.realizarEvento(jugador, conexiones.get(alt.nextInt(0, conexiones.size()))) + "\n";
             }
         }else if(ev.numAreas == 1 && ev.numObjetos == 1){
-            return null;
+            if(ev.esta){
+                return ev.realizarEvento(jugador, area, objetos.get(0)) + "\n";
+            }else{
+                return ev.realizarEvento(jugador, conexiones.get(alt.nextInt(0, conexiones.size())), objetos.get(0)) + "\n";
+            }
+        }else if(ev.numAreas == 0 && ev.numObjetos == 1){
+            return ev.realizarEvento(jugador, objetos.get(0)) + "\n";
         }
         return null;
     }
     
-    private String textoEvento(Personaje jugador, Personaje jugador2, Area area, Evento ev){
+    private String textoEvento(Personaje jugador, Personaje jugador2, Area area, Evento ev, ArrayList<Objeto> objetos){
         if(ev.numAreas == 0 && ev.numObjetos == 0){
             return ev.realizarEvento(jugador, jugador2) + "\n";
         }else if(ev.numAreas == 1 && ev.numObjetos == 0){
@@ -444,12 +472,16 @@ public class Area {
                 return ev.realizarEvento(jugador, jugador2, conexiones.get(alt.nextInt(0, conexiones.size()))) + "\n";
             }
         }else if(ev.numAreas == 1 && ev.numObjetos == 1){
-            return null;
+            if(ev.esta){
+                return ev.realizarEvento(jugador, jugador2, area, objetos.get(0)) + "\n";
+            }else{
+                return ev.realizarEvento(jugador, jugador2, conexiones.get(alt.nextInt(0, conexiones.size())), objetos.get(0)) + "\n";
+            }
         }
         return null;
     }
     
-    private String textoEvento(Personaje jugador, Personaje jugador2, Personaje jugador3, Area area, Evento ev){
+    private String textoEvento(Personaje jugador, Personaje jugador2, Personaje jugador3, Area area, Evento ev, ArrayList<Objeto> objetos){
         if(ev.numAreas == 0 && ev.numObjetos == 0){
             return ev.realizarEvento(jugador, jugador2, jugador3) + "\n";
         }else if(ev.numAreas == 1 && ev.numObjetos == 0){
@@ -464,7 +496,7 @@ public class Area {
         return null;
     }
     
-    private String textoEvento(Personaje jugador, Personaje jugador2, Personaje jugador3, Personaje jugador4, Area area, Evento ev){
+    private String textoEvento(Personaje jugador, Personaje jugador2, Personaje jugador3, Personaje jugador4, Area area, Evento ev, ArrayList<Objeto> objetos){
         if(ev.numAreas == 0 && ev.numObjetos == 0){
             return ev.realizarEvento(jugador) + "\n";
         }else if(ev.numAreas == 1 && ev.numObjetos == 0){
@@ -477,6 +509,25 @@ public class Area {
             return null;
         }
         return null;
+    }
+    
+    private ArrayList<Objeto> gestionarObjetos(int numJugadores, int numObjetos, Personaje personaje, Evento ev){
+        ArrayList<Objeto> devolver = new ArrayList<>();
+        if(numJugadores == 1){
+            switch(numObjetos){
+                case 1->{
+                    if(ev.encuentra){
+                        Objeto obj = gestor.getRandom();
+                        devolver.add(obj);
+                        personaje.addObject(obj);
+                    }else{
+                        devolver.add(personaje.getRandomObject());
+                    }
+                }
+            }
+        }
+        
+        return devolver;
     }
     
 }

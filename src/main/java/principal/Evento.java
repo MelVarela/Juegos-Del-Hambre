@@ -17,7 +17,7 @@ public class Evento {
     */
     public String muerte;
     //Se refiere a si el evento hace referencia al area en la que esta o a otra
-    public boolean esta;
+    public boolean esta, encuentra;
     
     Evento(char horario, int numeroPersonajes, char letalidad, String evento){
         hora = horario;
@@ -64,6 +64,32 @@ public class Evento {
         tipoLetal = letalidad;
         this.evento = evento;
         muerte = causaMuerte;
+    }
+    
+    Evento(char horario, int numeroPersonajes, int numeroObjetos, char letalidad, String evento, String causaMuerte){
+        hora = horario;
+        numJugadores = numeroPersonajes;
+        numObjetos = numeroObjetos;
+        tipoLetal = letalidad;
+        this.evento = evento;
+        muerte = causaMuerte;
+    }
+    
+    Evento(char horario, int numeroPersonajes, int numeroObjetos, char letalidad, String evento){
+        hora = horario;
+        numJugadores = numeroPersonajes;
+        numObjetos = numeroObjetos;
+        tipoLetal = letalidad;
+        this.evento = evento;
+    }
+    
+    Evento(char horario, int numeroPersonajes, int numeroObjetos, char letalidad, String evento, boolean encuentra){
+        hora = horario;
+        numJugadores = numeroPersonajes;
+        numObjetos = numeroObjetos;
+        tipoLetal = letalidad;
+        this.evento = evento;
+        this.encuentra = encuentra;
     }
     
     public String realizarEvento(Personaje p1){
@@ -256,6 +282,66 @@ public class Evento {
         }
         if(devolver.contains("&p1s")){
             devolver = replaceJugadorUnoP(p1, devolver);
+        }
+        
+        if(devolver.contains("&o1n")){
+            devolver = replaceObjetoUnoNP(o1.nombre, devolver);
+        }
+        if(devolver.contains("&o1s")){
+            devolver = replaceObjetoUnoP(o1, devolver);
+        }
+        
+        return devolver;
+    }
+    
+    public String realizarEvento(Personaje p1, Area a1, Objeto o1){
+        String devolver = evento;
+        
+        if(devolver.contains("&p1n")){
+            devolver = replaceJugadorUnoNP(p1.nombre, devolver);
+        }
+        if(devolver.contains("&p1s")){
+            devolver = replaceJugadorUnoP(p1, devolver);
+        }
+        
+        if(devolver.contains("&a1n")){
+            devolver = replaceAreaUnoNP(a1.nombre, devolver);
+        }
+        if(devolver.contains("&a1s")){
+            devolver = replaceAreaUnoP(a1, devolver);
+        }
+        
+        if(devolver.contains("&o1n")){
+            devolver = replaceObjetoUnoNP(o1.nombre, devolver);
+        }
+        if(devolver.contains("&o1s")){
+            devolver = replaceObjetoUnoP(o1, devolver);
+        }
+        
+        return devolver;
+    }
+    
+    public String realizarEvento(Personaje p1, Personaje p2, Area a1, Objeto o1){
+        String devolver = evento;
+        
+        if(devolver.contains("&p1n")){
+            devolver = replaceJugadorUnoNP(p1.nombre, devolver);
+        }
+        if(devolver.contains("&p1s")){
+            devolver = replaceJugadorUnoP(p1, devolver);
+        }
+        if(devolver.contains("&p2n")){
+            devolver = replaceJugadorDosNP(p2.nombre, devolver);
+        }
+        if(devolver.contains("&p2s")){
+            devolver = replaceJugadorDosP(p2, devolver);
+        }
+        
+        if(devolver.contains("&a1n")){
+            devolver = replaceAreaUnoNP(a1.nombre, devolver);
+        }
+        if(devolver.contains("&a1s")){
+            devolver = replaceAreaUnoP(a1, devolver);
         }
         
         if(devolver.contains("&o1n")){

@@ -20,6 +20,13 @@ public class Equipo {
         return new Personaje();
     }
     
+    public boolean contains(String nombre){
+        for (Personaje miembro : miembros) {
+            if(miembro.nombre.equals(nombre)) return true;
+        }
+        return false;
+    }
+    
     public void añadirMiembro(Personaje personaje){
         miembros.add(personaje);
         numMiembros++;

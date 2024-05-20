@@ -404,17 +404,35 @@ public class frameJuego extends javax.swing.JFrame {
             }
         }
         if(totalJug > 1){
-            return false;
+            ArrayList<Personaje> vivos = new ArrayList<>();
+            for (Personaje personaje : personajes) {
+                if(personaje.vivo) vivos.add(personaje);
+            }
+            String eqGanador = getEquipo(vivos.get(0));
+            for (Personaje vivo : vivos) {
+                if(!(getEquipo(vivo).equals(eqGanador))){
+                    return false;
+                }
+            }
+            return true;
         }else{
             return true;
         }
     }
     
-    private Personaje getGanador(){
+    private String getGanador(){
+        String devolver = "";
+        
         for (Area area : areas) {
-            if(!area.personajes.isEmpty()) return area.personajes.get(0);
+            for (Personaje personaje : area.personajes) {
+                devolver += personaje.nombre + ", ";
+            }
         }
-        return new Personaje("nadie");
+        if(devolver.equals("")){
+            return "Nadie";
+        }else{
+            return devolver.substring(0, devolver.length() - 2);
+        }
     }
     
     private String getEquipo(Personaje personaje){
@@ -425,10 +443,25 @@ public class frameJuego extends javax.swing.JFrame {
         return devolver;
     }
     
+    private String getEquipo(String nombrePer){
+        String devolver = "de nadie";
+        for (Equipo equipo : equipos) {
+            if(equipo.contains(nombrePer)){
+                return equipo.nombre;
+            }
+        }
+        return devolver;
+    }
+    
     private void victoria(){
-        Personaje ganador = getGanador();
-        String equipo = getEquipo(ganador);
-        String ganadorText = String.format("¡%s del equipo %s ha ganado!", ganador.nombre, equipo);
+        String ganador = getGanador();
+        String equipo = getEquipo(ganador.substring(0, ganador.indexOf(",")));
+        String ganadorText;
+        if(ganador.contains(",")){
+            ganadorText = String.format("¡%s del equipo %s se han hecho con la victoria!", ganador, equipo);
+        }else{
+            ganadorText = String.format("¡%s del equipo %s ha ganado!", ganador, equipo);
+        }
         areaEventos.setText(ganadorText);
         finalizado = true;
     }
@@ -463,7 +496,6 @@ public class frameJuego extends javax.swing.JFrame {
         arena.añadirEvento(new Evento('I',2,'O',"\n&p1n intenta huir, mientras que &p2n le persigue."));
         arena.añadirEvento(new Evento('I',2,'O',"\n&p1s huye de la arena, sin saber que &p2n p1(+le@-la#=lo$p1) está persiguiendo."));
         arena.añadirEvento(new Evento('I',3,'O',"\n&p1n, &p2n y &p3n se meten en una pelea, sin embargo, se dan cuenta de que no es el mejor\nmomento y se separan."));
-        arena.añadirEvento(new Evento('I', 2, 'N', "\n&p1n come una manzana que le da &p2n, sin saber que estaba envenada con cianuro.", "Envenenamiento."));
         arena.añadirEvento(new Evento('I',1,'O',"\n&p1n agarra una pala."));
         arena.añadirEvento(new Evento('I',1,'O',"\n&p1n agarra una mochila y se va."));
         arena.añadirEvento(new Evento('I',2,'O',"\n&p1n y &p2n se pelean por una mochila de suministros, sin darse cuenta de que está vacia."));
@@ -488,6 +520,11 @@ public class frameJuego extends javax.swing.JFrame {
         arena.añadirEvento(new Evento('I', 1, 'O', "\n&p1n agarra un mechero y algo de cuerda."));
         arena.añadirEvento(new Evento('I', 1, 'O', "\n&p1n agarra material para pescar."));
         arena.añadirEvento(new Evento('I', 1, 1, false, 'O', "\n&p1n piensa en la mejor forma de llegar a1(+al@-a la#a1) &a1s, pero no consigue ni salir\nde la arena."));
+        arena.añadirEvento(new Evento('I', 1, 1, 'O', "\n&p1n se encuentra o1(+un@-una#o1) &o1s.", true));
+        arena.añadirEvento(new Evento('I', 1, 1, 'O', "\n&p1n se encuentra o1(+un@-una#o1) &o1s mientras huia.", true));
+        arena.añadirEvento(new Evento('I', 1, 1, 'O', "\n&p1n se encuentra o1(+un@-una#o1) &o1s debajo de una piedra.", true));
+        arena.añadirEvento(new Evento('I', 1, 1, 'O', "\n&p1n se encuentra o1(+un@-una#o1) &o1s entre los matojos.", true));
+        arena.añadirEvento(new Evento('I', 2, 1, 'O', "\n&1n y &p2n se pelean por o1(+un@-una#o1) &o1s. Al final &p1n se queda con el objeto.", true));
         
         arena.añadirEvento(new Evento('D', 1, 'O', "\n&p1n patrulla la arena inicial."));
         arena.añadirEvento(new Evento('D', 1, 'O', "\n&p1n explora la arena incial."));
@@ -515,6 +552,7 @@ public class frameJuego extends javax.swing.JFrame {
         arena.añadirEvento(new Evento('D', 2, 'O', "\n&p1n y &p2n se separan para buscar recursos."));
         arena.añadirEvento(new Evento('D', 3, 'O', "\n&p1n y &p2n se estaban peleando por unos recursos, cuando &p3n les roba a los dos."));
         arena.añadirEvento(new Evento('D', 3, 'N', "\n&p3n y &p2n se estaban peleando, pero al ver llegar a &p1s deciden\nque era mejor idea p1(+matarlo@-matarla#=matarle$p1).", "Paliza gitana."));
+        arena.añadirEvento(new Evento('D', 1, 1, 'O', "\n&p1n se encuentra o1(+un@-una#o1) &o1s.", true));
         
         bosque.añadirEvento(new Evento('D', 1, 'O', "\n&p1n busca suministros en el bosque."));
         bosque.añadirEvento(new Evento('D', 1, 'O', "\n&p1n recoge frutos del bosque."));

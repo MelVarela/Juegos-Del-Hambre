@@ -2,6 +2,11 @@
 
 ## Un simulador por Guantes
 
+### V. 0.8
+- Nuevas características:  
+	- Ahora el juego decalrará una victoria si los ultimos personajes vivos son todos del mismo equipo.
+	- Añadidos 4 nuevos eventos.
+
 ### V. 0.7
 - Nuevas características:  
 	- Ahora los pronombres de los personajes se reflejan en el texto generado.

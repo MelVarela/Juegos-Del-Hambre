@@ -106,7 +106,7 @@ public class mainFrame extends javax.swing.JFrame {
         fieldEquipo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
         labelMovimiento.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        labelMovimiento.setText("Movimiento:");
+        labelMovimiento.setText("Cordura:");
         labelMovimiento.setEnabled(false);
 
         labelVida.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -512,7 +512,7 @@ public class mainFrame extends javax.swing.JFrame {
             displayVida.setEnabled(true);
             displayVida.setText(String.format("%d", display.vida));
             displayMovimiento.setEnabled(true);
-            displayMovimiento.setText(String.format("%d", display.movimiento));
+            displayMovimiento.setText(String.format("%d", display.cordura));
             displayCarisma.setEnabled(true);
             displayCarisma.setText(String.format("%d", display.carisma));
         } else {

@@ -1,12 +1,14 @@
 package principal;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Personaje {
     String nombre, pronombres, victimas, causaMuerte;
-    int vida, movimiento, carisma, killCount, ganasMover;
+    int vida, cordura, carisma, killCount, ganasMover;
     boolean vivo, accion;
     ArrayList<Objeto> equipamiento = new ArrayList<>();
+    Random alt = new Random();
     
     Personaje(String nombre, String pronombres){
         this.nombre = nombre;
@@ -15,11 +17,11 @@ public class Personaje {
         accion = false;
     }
     
-    Personaje(String nombre, String pronombres, int vida, int movimiento, int carisma){
+    Personaje(String nombre, String pronombres, int vida, int cordura, int carisma){
         this.nombre = nombre;
         this.pronombres = pronombres;
         this.vida = vida;
-        this.movimiento = movimiento;
+        this.cordura = cordura;
         this.carisma = carisma;
         vivo = true;
         killCount = 0;
@@ -68,6 +70,18 @@ public class Personaje {
     
     public void setCausaMuerte(String causa){
         causaMuerte = causa;
+    }
+    
+    public Objeto getObjet(int index){
+        return equipamiento.get(index);
+    }
+    
+    public Objeto getRandomObject(){
+        return equipamiento.get(alt.nextInt(equipamiento.size()));
+    }
+    
+    public void addObject(Objeto objeto){
+        equipamiento.add(objeto);
     }
     
     @Override
